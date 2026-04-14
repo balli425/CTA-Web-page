@@ -589,16 +589,16 @@
 
             const getFeedbackMessage = (scorePercent) => {
                 const s = parseFloat(scorePercent);
-                if (s >= 90) return { text: "太棒了！專業知識非常扎實，建築師執照就在眼前，繼續保持！", color: "bg-green-100 text-green-800 border-green-300" };
-                if (s >= 80) return { text: "表現優異！觀念相當清晰，維持這個節奏，考試絕對沒問題！", color: "bg-green-100 text-green-800 border-green-300" };
-                if (s >= 70) return { text: "很棒的成績！對考題已有良好掌握，再複習一下細節會更完美！", color: "bg-green-100 text-green-800 border-green-300" };
-                if (s >= 60) return { text: "恭喜及格！基礎已經建立，針對錯題稍微補強就能穩拿高分！", color: "bg-green-100 text-green-800 border-green-300" };
-                if (s >= 50) return { text: "就差一點點了！觀念已經成形，把錯題弄懂，下次一定順利及格！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                if (s >= 40) return { text: "再接再厲！萬事起頭難，多練習幾次，你的進步空間非常大喔！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                if (s >= 30) return { text: "別氣餒！法規與專業本來就繁雜，慢慢累積一定會看到成果！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                if (s >= 20) return { text: "好的開始！把這次的錯題當作學習契機，弄懂核心條文，分數會快速提升！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                if (s >= 10) return { text: "踏出第一步了！先從常考重點章節開始閱讀，循序漸進，你一定可以的！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                return { text: "沒關係，萬丈高樓平地起！靜下心來從基礎看起，一步一腳印慢慢進步！", color: "bg-orange-50 text-orange-700 border-orange-200" };
+                if (s >= 90) return { text: "🏆 滿分神話！你已經站上建築師考試的頂峰，這份實力將帶你穩穩踏上金榜！恭喜你！", color: "bg-green-100 text-green-800 border-green-300" };
+                if (s >= 80) return { text: "🌟 超神發揮！80分以上的實力代表你已是頂尖準建築師！考場上的你一定閃閃發光，繼續衝！", color: "bg-green-100 text-green-800 border-green-300" };
+                if (s >= 70) return { text: "🔥 高分通關！70分以上穩穩紮根，你的建築知識已經相當扎實！保持這股火熱氣勢，勝利就在眼前！", color: "bg-green-100 text-green-800 border-green-300" };
+                if (s >= 60) return { text: "🎉 恭喜恭喜！你已正式及格！這一分代表無數個努力的夜晚開花結果，你辦到了！繼續練習讓分數更漂亮！", color: "bg-green-100 text-green-800 border-green-300" };
+                if (s >= 50) return { text: "💪 距離及格只差一步！你的實力已經非常接近了，再多練習幾回合，60分就是你的囊中物！加油！", color: "bg-orange-50 text-orange-700 border-orange-200" };
+                if (s >= 40) return { text: "✨ 越來越好了！40分代表你已掌握相當多的核心知識，繼續努力，及格就在不遠處等著你！", color: "bg-orange-50 text-orange-700 border-orange-200" };
+                if (s >= 30) return { text: "🌱 穩健成長中！每一題都是寶貴的學習，你正在打下最紮實的地基。有這份毅力，成功一定是你的！", color: "bg-orange-50 text-orange-700 border-orange-200" };
+                if (s >= 20) return { text: "🚀 已經起飛了！20分只是個起點，建築師考試的知識正在你腦海中生根發芽，繼續練習你會讓自己驚豔！", color: "bg-orange-50 text-orange-700 border-orange-200" };
+                if (s >= 10) return { text: "🌈 勇敢踏出第一步，你已經贏了一半！每一個錯題都是最好的老師，從現在開始累積，你的進步將無可限量！", color: "bg-orange-50 text-orange-700 border-orange-200" };
+                return { text: "💡 萬丈高樓平地起！沒關係，每一位建築大師都是從零開始的。你今天踏出的這一步，就是通往夢想的第一塊磚！", color: "bg-orange-50 text-orange-700 border-orange-200" };
             };
 
             const formatTime = (seconds) => {
