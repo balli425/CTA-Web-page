@@ -1047,8 +1047,9 @@ function selectOption(letter) {
   if (state.userAnswers[idx] !== null && state.ansMode === 'instant') return;
   state.userAnswers[idx] = letter;
   renderQ();
-  if (state.ansMode === 'instant' && idx < state.questions.length - 1) {
-    setTimeout(() => { goQ(1); }, 900);
+  if (idx < state.questions.length - 1) {
+    const delay = state.ansMode === 'instant' ? 900 : 300;
+    setTimeout(() => { goQ(1); }, delay);
   }
 }
 
@@ -1104,11 +1105,17 @@ function showResults() {
   const pct = Math.round(correct/total*100);
 
   let emoji, title;
-  if (pct >= 90) { emoji = '🌟'; title = '太厲害了！完美成績！'; }
-  else if (pct >= 70) { emoji = '🎉'; title = '答得很好！繼續加油！'; }
-  else if (pct >= 60) { emoji = '👍'; title = '及格通過！還有進步空間'; }
-  else if (pct >= 40) { emoji = '📚'; title = '需要再加強喔！'; }
-  else { emoji = '💪'; title = '繼續努力！多看法規是關鍵！'; }
+  if (pct >= 100) { emoji = '🏆'; title = '太完美了！你簡直是建築考古題的傳奇，即將迎接勝利！'; }
+  else if (pct >= 90) { emoji = '🌟'; title = '超級厲害！你的實力無懈可擊，距離金榜題名只差一步！'; }
+  else if (pct >= 80) { emoji = '🔥'; title = '非常優秀！底子扎實得無話可說，繼續保持這股強大氣勢！'; }
+  else if (pct >= 70) { emoji = '🎉'; title = '表現很棒！穩步前進中，所有的難題都在你的掌握之中！'; }
+  else if (pct >= 60) { emoji = '👍'; title = '恭喜及格！這是個極棒的里程碑，每次練習都為正式考試打下最穩固的基礎！'; }
+  else if (pct >= 50) { emoji = '💪'; title = '就差一點點了！你的潛力無窮，多練習幾次絕對能突破及格大關！'; }
+  else if (pct >= 40) { emoji = '✨'; title = '漸入佳境！只要持續保持手感，你一定會越來越強大的！'; }
+  else if (pct >= 30) { emoji = '🌱'; title = '每一次的挑戰都是養分！吸收這些知識後，你會長得更加茁壯！'; }
+  else if (pct >= 20) { emoji = '🚀'; title = '好的開始是成功的一半！把這些題目當作墊腳石，準備一飛衝天！'; }
+  else if (pct >= 10) { emoji = '🌈'; title = '不要客氣！勇敢作答就是最棒的第一步，我們會陪你一次次進步的！'; }
+  else { emoji = '💡'; title = '萬丈高樓平地起！沒關係，從現在開始累積題感，一定會越挫越勇的！'; }
 
   if (state.didQuit) {
     emoji = '💔';
