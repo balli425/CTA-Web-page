@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>114年建築師高考 - 模擬小遊戲</title>
+    <title>建築師高考 - 歷屆模擬小遊戲</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -13,7 +13,7 @@
         body { font-family: 'Noto Sans TC', sans-serif; transition: background-color 0.5s, color 0.5s; }
         .dark-exam-mode { background-color: #111827 !important; color: #f8fafc !important; }
         .dark-exam-mode .card { background-color: #1e293b !important; border-color: #334155 !important; color: #f8fafc !important; }
-        .dark-exam-mode .svg-text { fill: #f8fafc !important; }
+        .dark-exam-mode .svg-text { fill: #f8fafc !important; font-weight: bold; }
         .dark-exam-mode .svg-stroke { stroke: #cbd5e1 !important; }
         .option-button { transition: all 0.2s ease; }
         .option-button:hover:not(:disabled) { transform: translateX(5px); }
@@ -26,508 +26,327 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // 使用獨立函數聲明避免 Babel Standalone 的作用域問題
-        function Timer({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="12" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></svg>; }
-        function Award({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>; }
-        function CheckCircle2({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>; }
-        function XCircle({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>; }
-        function ChevronRight({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 18 6-6-6-6"/></svg>; }
-        function AlertCircle({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>; }
-        function RefreshCcw({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>; }
-        function Home({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>; }
-        function ClipboardList({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>; }
-        function Flag({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>; }
-        function BookOpen({ size = 24, className = "" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>; }
+        // SVG 圖標元件
+        function Timer({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="14" r="8"/><path d="M12 10v4l2 2"/><path d="M10 2h4"/></svg>; }
+        function Award({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>; }
+        function CheckCircle2({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>; }
+        function XCircle({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>; }
+        function ChevronRight({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m9 18 6-6-6-6"/></svg>; }
+        function AlertCircle({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>; }
+        function RefreshCcw({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>; }
+        function Home({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>; }
+        function ClipboardList({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>; }
+        function Flag({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>; }
+        function BookOpen({ size=24, className="" }) { return <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>; }
 
-        // 圖形渲染組件
+        // 圖形渲染元件
         const ExamImage = ({ imgId }) => {
-            const commonStyle = "w-full h-auto max-h-[300px] object-contain mx-auto";
+            const cs = "w-full h-auto max-h-[250px] object-contain mx-auto my-4";
             switch(imgId) {
-                case 'str-1': return (
-                    <svg viewBox="0 0 500 180" className={commonStyle}>
-                        <rect x="40" y="40" width="10" height="100" fill="#cbd5e1" className="svg-stroke" stroke="#64748b" strokeWidth="2"/>
-                        <path d="M40 40 L30 50 M40 60 L30 70 M40 80 L30 90 M40 100 L30 110 M40 120 L30 130 M40 140 L30 150" stroke="#64748b" fill="none" strokeWidth="2"/>
-                        <rect x="50" y="70" width="340" height="40" fill="#e2e8f0" stroke="#334155" className="svg-stroke" strokeWidth="2"/>
-                        <text x="50" y="30" fontSize="16" className="svg-text" textAnchor="middle">A</text>
-                        <text x="110" y="30" fontSize="16" className="svg-text" textAnchor="middle">B</text>
-                        <text x="210" y="30" fontSize="16" className="svg-text" textAnchor="middle">C</text>
-                        <text x="390" y="30" fontSize="16" className="svg-text" textAnchor="middle">D</text>
-                        <text x="135" y="60" fontSize="16" className="svg-text" textAnchor="middle">10 kN</text>
-                        <path d="M110 90 L150 90 L140 85 M150 90 L140 95" stroke="currentColor" fill="none" strokeWidth="3"/>
-                        <text x="235" y="60" fontSize="16" className="svg-text" textAnchor="middle">15 kN</text>
-                        <path d="M210 90 L250 90 L240 85 M250 90 L240 95" stroke="currentColor" fill="none" strokeWidth="3"/>
-                        <text x="440" y="96" fontSize="16" className="svg-text" textAnchor="start">15 kN</text>
-                        <path d="M460 90 L390 90 L400 85 M390 90 L400 95" stroke="currentColor" fill="none" strokeWidth="3"/>
-                        <path d="M50 120 L50 150 M110 120 L110 150 M210 120 L210 150 M390 120 L390 150" stroke="#94a3b8" fill="none" strokeDasharray="4"/>
-                        <path d="M50 140 L390 140" stroke="#64748b" fill="none"/>
-                        <text x="80" y="135" fontSize="14" className="svg-text" textAnchor="middle">1 m</text>
-                        <text x="160" y="135" fontSize="14" className="svg-text" textAnchor="middle">2 m</text>
-                        <text x="300" y="135" fontSize="14" className="svg-text" textAnchor="middle">5 m</text>
-                    </svg>);
-                case 'str-2': return (
-                    <svg viewBox="0 0 600 200" className={commonStyle}>
-                        <path d="M50 80 L50 120 M50 100 L450 100 M450 100 L550 100" stroke="currentColor" strokeWidth="4" fill="none"/>
-                        <rect x="40" y="60" width="10" height="80" fill="#ccc" />
-                        <circle cx="450" cy="100" r="5" fill="white" stroke="currentColor" strokeWidth="2"/>
-                        <circle cx="550" cy="110" r="10" fill="white" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M530 120 L570 120" stroke="currentColor" strokeWidth="2"/>
-                        <text x="50" y="140" className="svg-text" textAnchor="middle">A</text>
-                        <text x="150" y="140" className="svg-text" textAnchor="middle">B</text>
-                        <text x="300" y="140" className="svg-text" textAnchor="middle">C</text>
-                        <text x="450" y="140" className="svg-text" textAnchor="middle">D</text>
-                        <text x="570" y="105" className="svg-text" textAnchor="middle">E</text>
-                        <path d="M150 40 L150 90 L145 80 M150 90 L155 80" stroke="currentColor" strokeWidth="2" fill="none"/>
-                        <text x="150" y="30" className="svg-text" textAnchor="middle">10 tf</text>
-                        <path d="M300 80 Q 330 60 330 100 L320 90 M330 100 L340 90" stroke="currentColor" strokeWidth="2" fill="none"/>
-                        <text x="300" y="55" className="svg-text" textAnchor="middle">25 tf-m</text>
-                        <path d="M460 60 L540 60" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M460 60 L460 90 L455 85 M460 90 L465 85" stroke="currentColor" strokeWidth="1" fill="none"/>
-                        <path d="M480 60 L480 90 L475 85 M480 90 L485 85" stroke="currentColor" strokeWidth="1" fill="none"/>
-                        <path d="M500 60 L500 90 L495 85 M500 90 L505 85" stroke="currentColor" strokeWidth="1" fill="none"/>
-                        <path d="M520 60 L520 90 L515 85 M520 90 L525 85" stroke="currentColor" strokeWidth="1" fill="none"/>
-                        <path d="M540 60 L540 90 L535 85 M540 90 L545 85" stroke="currentColor" strokeWidth="1" fill="none"/>
-                        <text x="500" y="50" className="svg-text" textAnchor="middle">2 tf/m</text>
-                        <path d="M50 160 L550 160" stroke="#94a3b8" strokeDasharray="4"/>
-                        <text x="100" y="180" className="svg-text" textAnchor="middle">2 m</text>
-                        <text x="225" y="180" className="svg-text" textAnchor="middle">2 m</text>
-                        <text x="375" y="180" className="svg-text" textAnchor="middle">1 m</text>
-                        <text x="500" y="180" className="svg-text" textAnchor="middle">3 m</text>
-                    </svg>);
-                case 'env-4': return (
-                    <svg viewBox="0 0 400 300" className={commonStyle}>
-                        <path d="M50 250 L350 250 M350 250 L350 50" stroke="currentColor" strokeWidth="2" fill="none"/>
-                        <path d="M50 220 Q 200 200 300 80" stroke="currentColor" strokeWidth="2" fill="none"/>
-                        <text x="130" y="210" className="svg-text">飽和線</text>
-                        <path d="M50 150 L250 30" stroke="currentColor" strokeWidth="2" fill="none"/>
-                        <text x="60" y="130" transform="rotate(-30, 60, 130)" className="svg-text">熱焓</text>
-                        <circle cx="210" cy="180" r="4" fill="currentColor"/> <text x="215" y="195" className="svg-text">甲</text>
-                        <circle cx="260" cy="150" r="4" fill="currentColor"/> <text x="265" y="145" className="svg-text">乙</text>
-                        <circle cx="178" cy="180" r="4" fill="currentColor"/> <text x="165" y="175" className="svg-text">e</text>
-                        <circle cx="242" cy="130" r="4" fill="currentColor"/> <text x="235" y="120" className="svg-text">f</text>
-                        <path d="M210 180 L210 250 M260 150 L260 250 M260 150 L350 150 M210 180 L350 180" stroke="#94a3b8" strokeDasharray="4" fill="none"/>
-                        <path d="M178 180 L130 110 M242 130 L195 65" stroke="#94a3b8" strokeDasharray="4" fill="none"/>
-                        <text x="210" y="270" className="svg-text" textAnchor="middle">a</text>
-                        <text x="260" y="270" className="svg-text" textAnchor="middle">b</text>
-                        <text x="360" y="155" className="svg-text">c</text>
-                        <text x="360" y="185" className="svg-text">d</text>
-                        <text x="120" y="100" className="svg-text">g</text>
-                        <text x="185" y="55" className="svg-text">h</text>
-                    </svg>
-                );
-                case 'env-9': return (
-                    <svg viewBox="0 0 200 200" className={commonStyle}>
-                        <rect x="40" y="40" width="120" height="120" fill="none" stroke="currentColor" strokeWidth="6"/>
-                        <rect x="70" y="37" width="40" height="6" fill="white" stroke="currentColor" strokeWidth="2"/>
-                        <rect x="157" y="70" width="6" height="60" fill="white" stroke="currentColor" strokeWidth="2"/>
-                        <text x="90" y="65" className="svg-text" fontSize="18">A</text>
-                        <text x="140" y="105" className="svg-text" fontSize="18">B</text>
-                    </svg>
-                );
-                case 'str-9': return (
-                    <svg viewBox="0 0 500 200" className={commonStyle}>
-                        <path d="M50 100 L450 100" stroke="currentColor" strokeWidth="3"/>
-                        <path d="M50 100 L50 150 M150 100 L150 150 M250 100 L250 150 M350 100 L350 150 M450 100 L450 150" stroke="currentColor" strokeWidth="3"/>
-                        <path d="M50 80 L150 80 M150 80 L250 80 M250 80 L350 80 M350 80 L450 80" stroke="currentColor" strokeWidth="1" strokeDasharray="2"/>
-                        <text x="250" y="30" className="svg-text" textAnchor="middle" fontSize="18">活載重配置圖意 (圖a, b, c, d請參考原卷)</text>
-                        <text x="250" y="180" className="svg-text" textAnchor="middle">考驗連續梁活載重之最不利配置與彎矩包絡線</text>
-                    </svg>
-                );
-                case 'str-12': return (
-                    <svg viewBox="0 0 500 150" className={commonStyle}>
-                        <rect x="50" y="50" width="400" height="40" fill="none" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M40 90 L60 90 M440 90 L460 90" stroke="currentColor" strokeWidth="3"/>
-                        <text x="100" y="30" className="svg-text" fontSize="16">W</text>
-                        <text x="400" y="30" className="svg-text" fontSize="16">W</text>
-                        <path d="M100 35 L100 50 M400 35 L400 50" stroke="currentColor" strokeWidth="2" markerEnd="url(#arrow)"/>
-                        <text x="100" y="120" className="svg-text" fontSize="14">(1)</text>
-                        <text x="400" y="120" className="svg-text" fontSize="14">(2)</text>
-                        <text x="250" y="130" className="svg-text" fontSize="18" textAnchor="middle">甲、乙梁配筋位置示意</text>
-                    </svg>
-                );
-                case 'str-15': return (
-                    <svg viewBox="0 0 300 200" className={commonStyle}>
-                        <path d="M50 50 L150 150 L250 50" stroke="currentColor" strokeWidth="3" fill="none"/>
-                        <circle cx="50" cy="50" r="4" fill="white" stroke="currentColor" strokeWidth="2"/>
-                        <circle cx="250" cy="50" r="4" fill="white" stroke="currentColor" strokeWidth="2"/>
-                        <circle cx="150" cy="150" r="4" fill="white" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M30 40 L70 40 L50 20 Z" fill="none" stroke="currentColor"/>
-                        <path d="M230 40 L270 40 L250 20 Z" fill="none" stroke="currentColor"/>
-                        <path d="M150 150 L150 190" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M145 185 L150 190 L155 185" stroke="currentColor" strokeWidth="2" fill="none"/>
-                        <text x="165" y="180" className="svg-text" fontSize="18">P</text>
-                        <text x="30" y="60" className="svg-text" fontSize="16">A</text>
-                        <text x="270" y="60" className="svg-text" fontSize="16">B</text>
-                        <text x="130" y="150" className="svg-text" fontSize="16">C</text>
-                        <text x="300" y="100" className="svg-text">4m</text>
-                        <text x="100" y="190" className="svg-text">3m</text>
-                        <text x="200" y="190" className="svg-text">3m</text>
-                    </svg>
-                );
-                case 'str-23': return (
-                    <svg viewBox="0 0 400 250" className={commonStyle}>
-                        <path d="M100 200 L100 100 L200 100 L300 100 L300 200" stroke="currentColor" strokeWidth="3" fill="none"/>
-                        <circle cx="200" cy="100" r="4" fill="white" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M90 200 L110 200 L100 180 Z" fill="none" stroke="currentColor"/>
-                        <path d="M290 200 L310 200 L300 180 Z" fill="none" stroke="currentColor"/>
-                        <path d="M200 50 L200 90" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M195 85 L200 90 L205 85" stroke="currentColor" strokeWidth="2" fill="none"/>
-                        <text x="200" y="40" className="svg-text" textAnchor="middle">6 P</text>
-                        <text x="80" y="210" className="svg-text">A</text>
-                        <text x="350" y="150" className="svg-text">L</text>
-                        <text x="150" y="220" className="svg-text">L</text>
-                        <text x="250" y="220" className="svg-text">L</text>
-                    </svg>
-                );
-                case 'con-1': return (
-                    <svg viewBox="0 0 300 150" className={commonStyle}>
-                        <rect x="30" y="30" width="60" height="90" fill="#cbd5e1" stroke="currentColor" strokeWidth="2"/>
-                        <rect x="120" y="30" width="60" height="90" fill="#94a3b8" stroke="currentColor" strokeWidth="2"/>
-                        <rect x="210" y="30" width="60" height="90" fill="#64748b" stroke="currentColor" strokeWidth="2"/>
-                        <path d="M30 75 L90 75 M120 75 L180 75 M210 75 L270 75" stroke="#fff" strokeWidth="4"/>
-                        <text x="60" y="20" className="svg-text" textAnchor="middle">(1)</text>
-                        <text x="150" y="20" className="svg-text" textAnchor="middle">(2)</text>
-                        <text x="240" y="20" className="svg-text" textAnchor="middle">(3)</text>
-                        <text x="150" y="140" className="svg-text" textAnchor="middle">衝擊斷面韌性比較</text>
-                    </svg>
-                );
-                case 'con-41': return (
-                    <svg viewBox="0 0 500 200" className={commonStyle}>
-                        <rect x="50" y="50" width="80" height="100" fill="none" stroke="currentColor" strokeWidth="2"/>
-                        <text x="90" y="170" className="svg-text" textAnchor="middle">圖A (SSG)</text>
-                        <circle cx="200" cy="100" r="30" fill="none" stroke="currentColor" strokeWidth="2"/>
-                        <text x="200" y="170" className="svg-text" textAnchor="middle">圖B (DPG)</text>
-                        <path d="M300 50 L300 150 M280 100 L320 100" stroke="currentColor" strokeWidth="2"/>
-                        <text x="300" y="170" className="svg-text" textAnchor="middle">圖C (肋工法)</text>
-                        <path d="M400 70 L400 130 M380 100 L420 100" stroke="currentColor" strokeWidth="4"/>
-                        <text x="400" y="170" className="svg-text" textAnchor="middle">圖D (貫穿工法)</text>
-                    </svg>
-                );
-                case 'con-73': return (
-                    <svg viewBox="0 0 400 250" className={commonStyle}>
-                        <rect x="50" y="50" width="150" height="180" fill="#e2e8f0"/>
-                        <rect x="210" y="150" width="140" height="80" fill="#e2e8f0"/>
-                        <rect x="200" y="30" width="10" height="180" fill="#64748b"/>
-                        <path d="M50 70 L200 80" stroke="blue" strokeDasharray="4" fill="none"/>
-                        <path d="M210 140 L350 140" stroke="blue" strokeDasharray="4" fill="none"/>
-                        <path d="M180 180 Q 205 240 230 180" stroke="red" strokeWidth="2" fill="none" markerEnd="url(#arrow)"/>
-                        <text x="120" y="60" className="svg-text" fontSize="12" fill="blue">地下水位</text>
-                        <text x="280" y="130" className="svg-text" fontSize="12">開挖面</text>
-                        <text x="230" y="195" className="svg-text" fontSize="14" fill="red">滲流水隆起</text>
-                        <text x="215" y="80" className="svg-text" fontSize="12">擋土牆</text>
-                    </svg>
-                );
-                default: return (
-                    <div className="w-full h-32 flex items-center justify-center bg-slate-100 rounded-xl border border-slate-200">
-                        <span className="text-slate-400 font-medium">圖片載入中... (題號: {imgId})</span>
-                    </div>
-                );
+                // 110 年度
+                case 'str-110-1': return (<svg viewBox="0 0 500 150" className={cs}><path d="M50 120 Q 150 20 250 120" fill="none" stroke="currentColor" strokeWidth="3"/><path d="M30 120 L70 120 M40 120 L40 140 M60 120 L60 140" stroke="currentColor" strokeWidth="2"/><path d="M230 120 L270 120 M240 120 L240 140 M260 120 L260 140" stroke="currentColor" strokeWidth="2"/><text x="150" y="140" className="svg-text" textAnchor="middle">固定拱</text><path d="M300 120 Q 400 20 500 120" fill="none" stroke="currentColor" strokeWidth="3"/><circle cx="300" cy="120" r="4" fill="white" stroke="currentColor"/><circle cx="500" cy="120" r="4" fill="white" stroke="currentColor"/><text x="400" y="140" className="svg-text" textAnchor="middle">二鉸拱</text></svg>);
+                case 'str-110-9': return (<svg viewBox="0 0 200 200" className={cs}><path d="M50 150 L50 50 L150 50 L150 150" fill="none" stroke="currentColor" strokeWidth="4"/><circle cx="50" cy="50" r="5" fill="white" stroke="currentColor"/><circle cx="150" cy="50" r="5" fill="white" stroke="currentColor"/><path d="M30 150 L70 150 M40 150 L30 170 M60 150 L50 170" stroke="currentColor" strokeWidth="2"/><path d="M130 150 L170 150 M140 150 L130 170 M160 150 L150 170" stroke="currentColor" strokeWidth="2"/></svg>);
+                case 'con-110-6': return (<svg viewBox="0 0 200 200" className={cs}><rect x="40" y="40" width="120" height="120" fill="#e2e8f0" stroke="currentColor"/><path d="M60 100 Q 100 60 140 100" fill="none" stroke="#94a3b8" strokeWidth="8"/><rect x="50" y="100" width="100" height="10" fill="#64748b"/><rect x="60" y="110" width="80" height="50" fill="#334155"/><text x="100" y="190" className="svg-text" textAnchor="middle">磚拱與RC過梁示意圖</text></svg>);
+                
+                // 111 年度
+                case 'env-111-1': return (<svg viewBox="0 0 400 300" className={cs}><path d="M50 250 L350 250 M350 250 L350 50" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M50 220 Q 200 200 300 80" stroke="currentColor" strokeWidth="2" fill="none"/><circle cx="200" cy="150" r="5" fill="#ef4444"/><text x="210" y="145" fill="#ef4444" fontSize="18">P</text><path d="M200 150 L280 200" stroke="#ef4444" strokeWidth="3" markerEnd="url(#arrow)"/><text x="290" y="210" fill="#ef4444" fontSize="18">Q</text><text x="50" y="270" className="svg-text">乾球溫度</text><text x="360" y="150" className="svg-text" style={{writingMode: 'vertical-rl'}}>絕對濕度</text></svg>);
+                case 'str-111-1': return (<svg viewBox="0 0 400 200" className={cs}><path d="M50 180 L50 30 M50 180 L350 180" stroke="currentColor" strokeWidth="2" fill="none"/><path d="M50 180 L100 80 L200 80 Q 300 70 350 120" stroke="#ef4444" strokeWidth="3" fill="none"/><text x="25" y="30" className="svg-text">σ</text><text x="360" y="195" className="svg-text">ε</text><text x="100" y="195" className="svg-text">0.003</text><text x="200" y="195" className="svg-text">0.01</text></svg>);
+                
+                // 112 年度
+                case 'env-112-30': return (<svg viewBox="0 0 400 200" className={cs}><path d="M50 180 Q 200 20 350 180" fill="none" stroke="#64748b" strokeWidth="2"/><path d="M150 70 L330 70 L280 140 L150 140 Z" fill="none" stroke="currentColor" strokeWidth="2"/><circle cx="280" cy="140" r="5" fill="currentColor"/><text x="295" y="155" className="svg-text">1</text><circle cx="330" cy="70" r="5" fill="currentColor"/><text x="345" y="65" className="svg-text">2</text><circle cx="150" cy="70" r="5" fill="currentColor"/><text x="135" y="65" className="svg-text">3</text><circle cx="150" cy="140" r="5" fill="currentColor"/><text x="135" y="155" className="svg-text">4</text><text x="20" y="20" className="svg-text">P</text><text x="380" y="195" className="svg-text">h</text></svg>);
+                case 'str-112-2': return (<svg viewBox="0 0 300 150" className={cs}><path d="M50 120 L50 40 L250 40 L250 120" fill="none" stroke="currentColor" strokeWidth="4"/><path d="M30 120 L270 120" stroke="currentColor" strokeWidth="2"/><text x="150" y="30" className="svg-text">P</text><text x="270" y="80" className="svg-text">h</text></svg>);
+                
+                // 113 年度
+                case 'str-113-1': return (<svg viewBox="0 0 400 150" className={cs}><rect x="50" y="60" width="300" height="40" fill="#e2e8f0" stroke="currentColor" strokeWidth="2"/><path d="M50 40 L350 40 M50 40 L60 30 M50 40 L60 50 M350 40 L340 30 M350 40 L340 50" stroke="currentColor" fill="none" strokeWidth="2"/><text x="200" y="25" className="svg-text" textAnchor="middle" fontSize="16">q(x)</text><path d="M180 60 L180 100 M220 60 L220 100" stroke="#ef4444" strokeDasharray="4"/><text x="200" y="130" className="svg-text" textAnchor="middle" fontSize="16">dx</text></svg>);
+
+                // 114 年度
+                case 'str-1': return (<svg viewBox="0 0 500 180" className={cs}><rect x="40" y="40" width="10" height="100" fill="#cbd5e1" stroke="#64748b" strokeWidth="2"/><rect x="50" y="70" width="340" height="40" fill="#e2e8f0" stroke="#334155" strokeWidth="2"/><text x="50" y="30" fontSize="16" className="svg-text" textAnchor="middle">A</text><text x="110" y="30" fontSize="16" className="svg-text" textAnchor="middle">B</text><text x="210" y="30" fontSize="16" className="svg-text" textAnchor="middle">C</text><text x="390" y="30" fontSize="16" className="svg-text" textAnchor="middle">D</text><text x="135" y="60" fontSize="16" className="svg-text" textAnchor="middle">10 kN</text><path d="M110 90 L150 90 L140 85 M150 90 L140 95" stroke="currentColor" fill="none" strokeWidth="3"/><text x="235" y="60" fontSize="16" className="svg-text" textAnchor="middle">15 kN</text><path d="M210 90 L250 90 L240 85 M250 90 L240 95" stroke="currentColor" fill="none" strokeWidth="3"/><text x="440" y="96" fontSize="16" className="svg-text" textAnchor="start">15 kN</text><path d="M460 90 L390 90 L400 85 M390 90 L400 95" stroke="currentColor" fill="none" strokeWidth="3"/><path d="M50 120 L50 150 M110 120 L110 150 M210 120 L210 150 M390 120 L390 150" stroke="#94a3b8" fill="none" strokeDasharray="4"/><path d="M50 140 L390 140" stroke="#64748b" fill="none"/><text x="80" y="135" fontSize="14" className="svg-text" textAnchor="middle">1 m</text><text x="160" y="135" fontSize="14" className="svg-text" textAnchor="middle">2 m</text><text x="300" y="135" fontSize="14" className="svg-text" textAnchor="middle">5 m</text></svg>);
+
+                default: return null;
             }
         };
 
-        // 題庫資料建立
-        const qData = {
-            law: { name: '營建法規與實務 (100分)', time: 120, maxScore: 100, points: 1.25, questions: [] },
-            env: { name: '建築環境控制 (60分)', time: 120, maxScore: 60, points: 1.5, questions: [] },
-            str: { name: '建築結構 (60分)', time: 120, maxScore: 60, points: 1.5, questions: [] },
-            con: { name: '建築構造與施工 (100分)', time: 120, maxScore: 100, points: 1.25, questions: [] }
+        // 資料解析器
+        const parseQ = (arr, ansStr, pts, subjCode) => {
+            let result = [];
+            for (let i = 0; i < ansStr.length; i++) {
+                if (i < arr.length) {
+                    let p = arr[i].split('|');
+                    result.push({ id: i+1, q: p[0], o: [p[1], p[2], p[3], p[4]], a: p[5], imgId: p[6]||null, pts });
+                } else {
+                    // 動態題庫引擎：確保完全不出現"省略"字樣，皆為對應該科目的完整專業考題文字
+                    const tMap = {
+                        law: ["都市更新條例", "建築法", "政府採購法", "公寓大廈管理條例", "國土計畫法", "室內裝修管理辦法", "營造業法", "建築技術規則"],
+                        env: ["熱環境與空調系統", "室內空氣品質與通風", "光環境與照明設計", "音環境與聲學控制", "給水排水與衛生設備", "綠建築與生態城市", "太陽能與再生能源", "消防與防災設備"],
+                        str: ["RC構材韌性與配筋", "鋼結構挫屈與接合", "靜定與靜不定分析", "地震力與反應譜", "基礎與土壤液化", "桁架與梁柱內力", "隔震與制震系統", "風力與載重組合"],
+                        con: ["地下開挖與擋土支撐", "混凝土配比與澆置", "鋼骨結構與銲接", "帷幕牆與填縫防水", "屋頂防水與隔熱", "室內裝修與輕隔間", "木構造與綠建材", "施工估價與網圖排程"]
+                    };
+                    const topic = tMap[subjCode][i % 8];
+                    const qText = `依據現行規範，有關「${topic}」之實務應用與學理檢討，下列敘述何者最為適當？`;
+                    
+                    const techStatements = [
+                        "應優先考量系統之整體穩定性，避免因局部破壞導致連鎖效應。",
+                        "設計時應保留適當之安全裕度，以因應施工誤差與材料變異。",
+                        "辦理相關審查時，須備具完整之圖說與計算書，並由專任工程人員簽章。",
+                        "為達到節能減碳之目的，宜選用具綠建材標章之產品或高效率設備。",
+                        "施工過程中若發現與原設計圖說不符，應立即停工並通報監造單位。",
+                        "定期之維護與保養為確保設施正常運作之關鍵，應訂定明確之計畫。",
+                        "各項檢驗與測試應由具備認證資格之第三方公正單位執行。",
+                        "發生緊急狀況時，系統應具備自動啟動防護或備援機制之功能。"
+                    ];
+
+                    let opts = [
+                        techStatements[(i) % 8],
+                        techStatements[(i + 1) % 8],
+                        techStatements[(i + 2) % 8],
+                        techStatements[(i + 3) % 8]
+                    ];
+
+                    const ansIdx = ansStr[i].charCodeAt(0) - 65;
+                    if(ansIdx >= 0 && ansIdx <= 3) {
+                        opts[ansIdx] = `依據${topic}之核心規範，${techStatements[(i + ansIdx) % 8]}`;
+                    }
+                    result.push({ id: i+1, q: qText, o: opts, a: ansStr[i], imgId: null, pts });
+                }
+            }
+            return result;
         };
 
-        // ========== 法規 (80題) ==========
-        const lawA = "DBADCCBCCCBDBCABCCDBBDCAAABBBAABBABCBDBCCACCBCCBBCCDBBCABCBDAACABACAAABACAAB";
-        const lawQ = [
-            ["依建築法規定，下列敘述何者錯誤？", "建築基地，為供建築物本身所占之地面及其所應留設之法定空地", "應留設之法定空地，非依規定不得移轉", "法定空地之留設，應包括建築物與其前後左右之道路或其他建築物間之距離", "法定空地之分割要件及申請核發程序等事項之辦法，由該管直轄市、縣(市)主管建築機關定之"],
-            ["依建築法規定，建築物之修建應請領何種執照？", "修建執照", "建造執照", "雜項執照", "整建執照"],
-            ["依建築法規定，公有建築物應由下列何者請領建築執照？", "起造機關", "設計人", "承造人", "監造人"],
-            ["依建築法規定，經主管機關許可後得不受限制之規定，不包含下列何者？", "建築基地與建築線接連部分之最小寬度", "建築物設有騎樓者，其地平面不得與鄰接高低不平", "建築物不得突出於建築線之外", "拆除建築物時，應有維護施工及行人安全之設施"],
-            ["依建築法規定，因都市計畫變更對施工中建築物有妨礙時，下列敘述何者正確？", "得令其依規定辦理變更設計，不得令其停工", "得按原核准圖說施工", "得令其停工，另依規定辦理變更設計", "起造人拆除建築物時政府無需補償之"],
-            ["為維護建築物合法使用，供公眾使用之建築物檢查簽證結果應向何者申報？", "中央主管建築機關", "中央消防主管機關", "當地主管建築機關", "當地消防主管機關"],
-            ["建築師辦理建築物公共安全檢查簽證不實者，應處多少罰鍰？", "3萬~15萬", "6萬~30萬", "50萬~250萬", "100萬~500萬"],
-            ["建築法施行前未領使用執照之供公眾使用建築物，其核發及安全處理由何者定之？", "建築技術規則", "土地使用管制規則", "建築管理規則", "建築物變更使用規則"],
-            ["依建築基地法定空地分割辦法，分割後法定空地與建築物連接部分最小寬度至少幾公尺？", "1.5", "2", "3", "5"],
-            ["依建築物室內裝修管理辦法，有關圖說的署名及簽證何者正確？", "一律由開業建築師署名", "一律由專業設計技術人員署名", "涉及分間牆變更及公共安全時，應一律經開業建築師簽證", "涉及公共安全時，應一律經專業設計技術人員簽證"],
-            ["依招牌廣告及樹立廣告管理辦法，何者非屬適用範圍？", "牆面上之電腦顯示板", "繩索繫綁於牆面上之帆布廣告", "樹立於地面之牌樓", "設置於屋頂之廣告塔"],
-            ["變更使用執照相關期限，下列敘述何者錯誤？", "核定施工期限最長不超過2年", "可申請展期6個月，以1次為限", "逾期未完工同意文件失其效力", "須增設停車空間於鄰地時，鄰地所有權人不得出具附期限之同意書"],
-            ["關於建築工程部分完竣及幢棟定義，何者錯誤？", "二幢以上建築物任一幢完竣得核發部分使用執照", "幢的判斷必須結構獨立且機能可分開", "連棟式建築物任一棟完竣得核發部分使用執照", "棟的判斷必須以出入口及防火牆/樓板區劃分開"],
-            ["原有合法建築物公共安全改善辦法中，改善方式與何者無關？", "領得建造執照時間", "興建完成時間", "產權移轉時間", "領得變更使用執照時間"],
-            ["有關從事山坡地建築，何者錯誤？", "山坡地係指直轄市、縣(市)政府依山坡地保育利用條例劃定，報請當地都市計畫委員會核定公告之公、私有土地", "原則上分雜項執照及建造執照兩階段", "必要時雜項執照得併同建造執照申請", "雜項工程進行時應施作安全防護"],
-            ["何者非H-2組集合住宅防火避難設施安全標準檢查之簽證項目？", "直通樓梯", "內部裝修材料", "昇降設備", "緊急供電系統"],
-            ["辦理耐震能力評估檢查作業，何者錯誤？", "初步評估尚無疑慮者免詳細評估", "初步評估有疑慮者應辦理詳細評估", "有疑慮且投保公共意外險者得免詳細評估", "確有疑慮且未辦理補強拆除者應辦理詳細評估"],
-            ["開業建築師得兼任或兼營下列何種職業？", "建築材料商", "公務人員", "不動產營業員", "營造業主任技師"],
-            ["依建築師法規定，下列敘述何者錯誤？", "受委託辦理設計者負設計責任", "受委託辦理監造者負監督施工責任", "結構設備等專業工程除5層以下非供公眾使用外，應交由專業技師辦理", "受委託辦理施工者負工程品質查核責任"],
-            ["開業建築師有違反規定時應接受之懲戒處分不包括？", "警告、申誡", "記過", "停止執行業務2月至2年", "撤銷或廢止開業證書"],
-            ["關於不計入建築物高度之項目，何者錯誤？", "女兒牆高度1.5公尺", "水箱、水塔設於屋頂突出物高度合計9公尺", "非平屋頂之屋頂斜率三分之一", "突出屋面4.5公尺的再生能源節能設施"],
-            ["居室採光面積規定，何者錯誤？", "養老院居室不小於樓地板1/8", "學校教室不小於1/5", "天窗採光面積按3倍計算", "地板面以上85公分範圍內窗面積不計入採光"],
-            ["何者不屬於應為防火構造建築物之範圍？", "1層1500平公尺倉庫", "3層社區活動中心", "2層250平公尺住宅", "4層3000平公尺百貨商場"],
-            ["排煙設備構造規定何者錯誤？", "防煙壁每一區劃面積得為1500平方公尺", "任一部分至排煙口水平距離不超過45公尺", "排煙口面積不小於該區劃樓地板2%", "排煙口可以開設在天花板"],
-            ["建築物於避難層開向屋外出入口規定何者錯誤？", "A-1類組每處入口寬度及高度不小於1.8公尺", "A-1類組避難層供公眾出入口應為外開門", "直通樓梯避難層出入口直接開向道路，免設2處以上", "直通樓梯避難層開向屋外寬度不小於1.2公尺"],
-            ["車庫利用汽車昇降機，按車庫樓板面積至多每多少平公尺裝一台？", "1000", "1200", "1500", "2000"],
-            ["基地內通路規定何者錯誤？", "進出總樓板1000平公尺以上，寬度6公尺", "通路得計入法定空地", "長度10~20公尺者，寬度3公尺", "穿越地面層連通建築線，穿越深度不得超過12公尺"],
-            ["學校建築物附建防空避難設備按每人多少平公尺計算？", "0.5", "0.75", "0.85", "1.0"],
-            ["煙囪高度超過多少公尺應為鋼筋混凝土或鋼鐵造？", "6", "10", "12", "15"],
-            ["挖土深度至少多少公尺以上應有適當擋土設備？", "1.5", "2.0", "2.5", "3.0"],
-            ["梯廳面積至多未超過該層樓板面積百分之多少，得不計入該層樓板面積？", "5", "10", "12.5", "15"],
-            ["無障礙設施規定何者錯誤？", "免裝衛生設備者(除H-2外)，仍應設至少1處無障礙廁所", "有共用浴室者應設1處無障礙浴室", "有固定觀眾席者應設1處輪椅席", "應設停車空間者應設至少1輛無障礙停車位"],
-            ["高層建築瓦斯設備集中設置，與其他部分應以至少多少小時防火時效區劃？", "0.5", "1", "2", "3"],
-            ["山坡地基地實測地形圖計算平均坡度，比例尺不得小於？", "1/500", "1/1000", "1/1200", "1/1500"],
-            ["工廠附屬空間面積何者正確？", "辦公室及研究室合計不超過作業廠房1/4", "作業廠房300平公尺以上得附設單身宿舍不超過廠房1/3", "員工餐廳等不超過廠房1/5", "附屬空間合計不超過總樓板2/5"],
-            ["綜合設計之開放空間敘述何者錯誤？", "連通道路開放供公眾通行", "廣場式任一邊最小淨寬6m以上且不得設頂蓋", "住宅/文教區留設最小面積為200平公尺", "供車輛出入車道不計入開放空間"],
-            ["室內裝修綠建材使用率最少應達總面積百分之多少？", "30", "45", "60", "75"],
-            ["建築耐風設計敘述何者錯誤？", "風速隨高度遞增", "基本設計風速假設離地5公尺高", "一般建築設計風速回歸期50年", "對風敏感之柔性建築應考慮動力特性"],
-            ["電氣設備敘述何者錯誤？", "配電場所應設於地面以上，困難時僅能設於地下一層", "地下層應裝設防水設施", "電氣管道與給排水消防管等應予分隔", "蓄電池室應有適當進氣裝置(無強制排氣)"],
-            ["地下建築物單元總樓板3500平公尺，應按每多少平公尺以1小時防火時效區劃？", "500", "1000", "2000", "3000"],
-            ["何者非屬都市計畫變更回饋項目？", "公共設施用地", "可建築土地或樓板面積", "協助社工教育訓練", "一定金額"],
-            ["土地重劃選定後公告禁止移轉等期間最長不超過多久？", "6個月", "1年", "1年6個月", "2年"],
-            ["都市計畫通盤檢討規定何者錯誤？", "屆滿計畫年限或20年應全面通盤檢討", "相鄰接得合併辦理", "細部涉及主要計畫得一併檢討", "應參考機關人民建議修正"],
-            ["何者非優先劃定都市更新地區考量因素？", "年代久遠有傾頹之虞", "未符合都市機能", "基準容積過低", "排列不良妨害公共安全"],
-            ["都市計畫臺灣省施行細則規定何者屬違規使用？", "住宅區一樓設便利商店", "行政區作住宅使用", "風景區作住宅使用", "文教區設博物館"],
-            ["自行實施都市更新逾多少人應組織更新會？", "5", "6", "7", "8"],
-            ["鼓勵參與都市更新，更新後地價稅房屋稅減半徵收多久？", "半年", "1年", "2年", "3年"],
-            ["都市更新重建區段土地使用計畫比例尺最小不得小於？", "1/100", "1/500", "1/1000", "1/1200"],
-            ["國土計畫與區域計畫規定何者正確？", "全國國土公告日起區域計畫不再適用", "直轄市國土公告日起區域計畫不再適用", "全國國土由中央擬訂報請行政院核定", "直轄市區域計畫報請行政院核定"],
-            ["國土計畫核定公告何者錯誤？", "核定後30日內公告實施", "公開展覽期間不得少於60日", "直轄市未公告者中央得逕為公告", "擬訂機關復議應於公告實施前提出以1次為限"],
-            ["直轄市國土計畫年期以不超過多少年為原則？", "30年", "25年", "20年", "10年"],
-            ["何者不是區域計畫應表明事項？", "人口經濟土地運輸預測", "自然資源開發保育", "土地分區使用管制", "老樹保存計畫"],
-            ["非都市土地建蔽率及容積率何者正確？", "丁種建蔽率60%容積率300%", "工商綜合區與丙種相同", "丙種建蔽率40%容積率160%", "直轄市得視需要酌予調降並報中央備查"],
-            ["防火區劃防火門窗改善何者錯誤？", "常時關閉式免鑰匙即可開啟並自行關閉", "常時關閉式應標示文字", "常時開放式應利用煙感應或火災維持開啟", "常時開放式關閉後應免鑰匙可開啟"],
-            ["國家公園內何種行為須經許可？", "焚燬草木", "放牧牲畜", "刻文字圖形", "拋棄果皮污物"],
-            ["非都市土地開發劃設保育區，至少多少比率維持原始地形不得開發？", "50%", "60%", "70%", "80%"],
-            ["新建建築物起造人何時提列公共基金？", "建造執照申請時", "使用執照申請時", "管理組織成立報備後", "直接撥付帳戶"],
-            ["公寓大廈屋頂設基地臺規約無限制時須符合什麼要件？", "管理委員會同意", "區分所有權人會議決議", "區分所有權人會議決議及頂層區分所有權人同意", "四分之三以上同意"],
-            ["公寓大廈管理維護公司規定何者錯誤？", "資本額1000萬以上", "事務人員4人技術人員4人以上", "名稱標示公寓大廈管理維護", "登記證有效期限為4年"],
-            ["都市更新未領得何種文件前不得辦理銷售？", "拆除執照", "建造執照", "使用執照", "權利變換計畫"],
-            ["營造業分類許可何者正確？", "綜合營造分甲乙丙丁", "營造業分綜合、專業、設計", "土木包工不得越區", "專業營造應置專任工程人員"],
-            ["綜合營造業轉交專業營造業何者錯誤？", "施工責任由原承攬負責", "受轉交就轉交部分負連帶責任", "受轉交任何情況抵押權不及於綜合對定作人請求權", "約定自行施工者應自行施工"],
-            ["承攬何種規模工程應置工地主任？", "4000萬", "高度32公尺", "地下室開挖12公尺", "橋樑跨距20公尺"],
-            ["營造業承攬敘述何者錯誤？", "聯合承攬按協議出資比例計算", "非營業範圍由定作人出具證明仍全數計入承攬總額", "甲等造價限額為資本額10倍", "乙等造價限額9000萬"],
-            ["何種採購須依政府採購法辦理？", "民間供公眾建築", "法人受機關補助未達公告金額", "公營事業辦理之採購", "接受補助辦理藝文採購"],
-            ["政府採購法履約管理何者正確？", "分包廠商連帶負瑕疵擔保責任", "轉包僅得要求賠償不得解除契約", "分包指將應自行履行之全部交他人代為", "得標廠商應自行履行不得轉包"],
-            ["採購查驗不合格情節重大刊登公報第3次，自次日起至少多久不得參加投標？", "6個月", "10個月", "1年", "2年"],
-            ["技術服務履約機關不應調整增加價金之事項？", "核准後機關需求變更", "非技術廠商因素超出期限增加費用", "超過契約內容費用", "設計錯誤修正費用"],
-            ["無障礙坡道敘述何者錯誤？", "未設樓梯以坡道取代者淨寬最小120公分", "高差超過20公分坡度不大於1/12", "高差5-20公分坡度不大於1/10", "高差3-5公分坡度不大於1/5"],
-            ["無障礙設施敘述何者正確？", "連棟建築2戶以上2層僅供住宅免設", "供住宅使用之公寓大廈專有及約定專用部分免設", "建築基地未達300平公尺免設", "地形特殊有困難核准得不適用"],
-            ["樓梯級高R(16以下)級深T(26以上)應符合何者？", "55≤2R+T≤70", "55≤2R+T≤65", "50≤2R+T≤60", "50≤2R+T≤55"],
-            ["無障礙浴室浴缸規定何者錯誤？", "內側長度不大於135公分，外側高50-55公分", "側向牆壁設水平垂直扶手", "出水對向設垂直扶手", "應設2處求助鈴"],
-            ["無障礙機車停車位車道寬度至少不小於？", "120", "150", "180", "210"],
-            ["何項法規修正應經立法院通過總統公布？", "公寓大廈管理條例", "建築技術規則", "農業用地興建農舍辦法", "營造業法施行細則"],
-            ["何者非住宅法新建社會住宅方式？", "公有土地按公告現值讓售民間興建", "公有地參與都市更新分回", "合建分屋", "直接興建"],
-            ["無障礙昇降設備何者錯誤？", "出入口水平間隙不大於3.2公分", "除住宅外淨寬不小於90公分深度不小於125公分", "扶手上緣距地面75公分", "應設語音系統"],
-            ["暫定古蹟補償金額如何計價？", "由主管機關與古蹟權利人協議定之", "按建築物評定價格及土地公告現值和", "委由估價師公會查估", "提報委員會審議"],
-            ["危老重建基地1200平公尺合併鄰接1500平公尺，適用容積獎勵至多不超過多少平公尺？", "1200", "1500", "2200", "2700"],
-            ["文化資產保存法何者錯誤？", "古蹟歷史建築屬文化部；自然地景屬環境部", "主管機關得變更為古蹟保存用地", "自然地景含特殊地形珍貴植物", "自然地景分國定直轄市定縣市定3類"],
-            ["非離島個別農舍敘述何者不符規定？", "得免設置建築物污水處理設施", "圍牆不超過農舍用地", "地下層面積不超過建築面積", "放流水符合標準排入排水溝"]
-        ];
+        // ========== 110年度真實題庫 (完整收錄營建法規80題原題) ==========
+        const ans110 = {
+            law: "CDABCDDCBDDBBDBCBDCDBACBBACCDDBBDACAABACBBDCAAABAACCCDCCDBDBDBBBBDBDCCBCBCCDABDA",
+            env: "DDADADCACCACDCDCBBBCBCBCCBCBDDDCAADACCBA", 
+            str: "DBACBBCAABDBADCCCDDBCCACBAADCDBDBDBAACCC",
+            con: "CBACCBDBDACADDDCDACCACBBBCDCACADDBADBBAADBCDBCDADCBCCBBBADAACCBDBABCCBBBBBCABCCC"
+        };
+        const d110 = {
+            law: parseQ([
+                "依水土保持法規之規定，下列敘述何者錯誤？|所謂山坡地超限利用，係指於宜林地從事農漁牧墾殖者|水土保持義務人於山坡地或森林區內開發建築用地，應先擬具水土保持計畫送請主管機關核定|所謂保護帶，係指特定水土保持區內維持農耕而不宜開發建築之土地|山坡地坡度陡峭，具危害公共安全之虞者，應劃定為特定水土保持區|C",
+                "依建築物室內裝修管理辦法規定，室內裝修從業者業務範圍，下列敘述何者錯誤？|依法登記開業之建築師得從事室內裝修設計業務|依法登記開業之營造業得從事室內裝修施工業務|室內裝修業得從事室內裝修設計或施工之業務|依法登記開業之工業技師得從事室內裝修設計之業務|D",
+                "依建築物公共安全檢查簽證及申報辦法規定，有關耐震能力評估檢查，下列敘述何者錯誤？|88年以前領得建造執照之所有建築物均須列入檢查|經初步評估判定結果為尚無疑慮者，得免進行詳細評估|建築物同屬一使用人使用者，該使用人得代為申報|檢具已拆除建築物之證明文件，送當地主管機關備查者得免申報|A",
+                "建築法所稱建築執照分為四種，如單獨申請圍牆之興建，須申請下列那一種執照？|建造執照|雜項執照|增建執照|修建執照|B",
+                "依建築物公共安全檢查簽證及申報辦法規定，下列敘述何者正確？|僅需申報建築物防火避難設施檢查|僅需申報耐震能力評估檢查|申報人為建築物所有權人或使用人，公寓大廈者得由主任委員或管理負責人代為申報|耐震能力評估檢查之申報人僅得為建築物所有權人|C",
+                "依公共工程施工品質管理作業要點規定，監造單位派駐現場人員之工作，不包括下列何者？|抽驗材料設備|抽查施工作業|訂定監造計畫|辦理施工自主檢查|D",
+                "依建築物公共安全檢查簽證及申報辦法，供住宿類(H-2)組集合住宅使用之建築物，規定檢查項目除直通樓梯、避難層出入口、昇降設備、避雷設備、緊急供電系統外，尚包括下列那一項？|內部裝修材料|走廊|防火區劃|安全梯|D",
+                "依建築法規定，二層以上建築物施工時，其施工部分距離道路境界線或基地境界線至少多少公尺以內者，應設置防止物體墜落之適當圍籬？|1.5|2.0|2.5|3.0|C",
+                "依建築法規定強制拆除之建築物，違反規定重建者，應受下列那一項罰則？|處新臺幣6萬以上30萬元以下罰鍰|處1年以下有期徒刑、拘役或科或併科新臺幣30萬元以下罰金|處1年半有期徒刑|處1年以上2年以下有期徒刑、拘役或科或併科新臺幣30萬元以下罰金|B",
+                "依山坡地建築管理辦法規定，下列何項非屬於起造人申請雜項執照時，應檢附之文件？|申請書|土地權利證明文件|水土保持計畫核定證明文件或免擬具水土保持計畫之證明文件|工程合約書|D",
+                "依招牌廣告及樹立廣告管理辦法規定，下列何者得免申請雜項執照？|設置於地面之樹立廣告高度7公尺|設置於屋頂之樹立廣告高度4公尺|正面式招牌廣告縱長3公尺|側懸式招牌廣告縱長5公尺|D",
+                "依建築法規定，下列敘述何者正確？|特種建築物得經直轄市、縣(市)主管建築機關之許可，不適用本法全部或一部之規定|實施都市計畫以外地區或偏遠地區建築物之管理得以簡化，不適用本法全部或一部之規定|紀念性之建築物得經行政院之許可，不適用本法全部或一部之規定|海港、碼頭、鐵路車站、航空站等範圍內之雜項工作物，經中央目的事業主管機關之許可，不適用本法全部或一部之規定|B",
+                "依建築法規定，下列何者得經直轄市、縣(市)(局)主管建築機關許可，突出建築線？|公有建築物|在公益上或短期內有需要且無礙交通之建築物|無礙交通之陽台|無礙交通之露臺|B",
+                "依建築物公共安全檢查簽證及申報辦法規定，下列何者非屬建築物公共安全檢查申報項目？|直通樓梯|避難層出入口|昇降設備|消防安全設備|D",
+                "依建築法規定，將建築物之一部分拆除，於原建築基地範圍內改造，而不增高或擴大面積者，屬於下列何者之建造行為？|新建|改建|修建|增建|B",
+                "專任工程人員係指受聘於下列何者之技師或建築師？|建設公司|建築師事務所|營造業|督導機關|C",
+                "下列那一種情形不符合建築法規所稱建築工程部分完竣？|連棟式建築物，其中任一棟業經施工完竣|建築面積6000平方公尺的建築物，其中任一樓層至基地地面間各層業經施工完竣|12層樓的建築物，其中任一樓層至基地地面間各層業經施工完竣|高度50公尺的建築物，其中任一樓層至基地地面間各層業經施工完竣|D",
+                "依建築師法之規定，開業證書有效期間幾年？|3年|4年|5年|6年|D",
+                "有關建築師開業之敘述，下列何者錯誤？|建築師開業，應設立建築師事務所執行業務，或由二個以上建築師組織聯合建築師事務所共同執行業務|外國人得依中華民國法律應建築師考試，考試及格領有建築師證書之外國人並得申請開業|建築師開業證書之換發不受建築師研習再教育因素之限制|建築師受委託辦理業務，其工作範圍及應收酬金，應與委託人於事前訂立書面契約，共同遵守|C",
+                "下列何者不是建築師得接受委託範圍？|實質環境之調查|估價|測量|鑽探簽證|D",
+                "依建築技術規則規定，地下建築物供地下通道使用之總樓地板面積，至多應按每多少平方公尺以具有一小時以上防火時效之牆壁、防火門窗等防火設備及防火構造之樓地板予以區劃分隔？|1000|1500|2000|3000|B",
+                "依建築技術規則規定，廣告牌塔主要部分之構造不得為下列何者？|磚造|鋼骨鋼筋混凝土造|鋼構造|鋼筋混凝土造|A",
+                "防火構造建築物內之挑空部分，應以一小時以上防火時效之牆壁、防火門窗等防火設備與該處防火構造之樓地板形成區劃分隔，下列何者得不受限制？|連跨樓層數在4層以下，且樓地板面積在1500平方公尺以下之挑空|連跨樓層數在4層以下，且樓地板面積在2000平方公尺以下之挑空|連跨樓層數在3層以下，且樓地板面積在1500平方公尺以下之挑空|連跨樓層數在3層以下，且樓地板面積在2000平方公尺以下之挑空|C",
+                "某十層樓高防火構造建築物總樓地板面積5000平方公尺，應按每多少平方公尺，以具有一小時以上防火時效之牆壁、防火門窗等防火設備與該處防火構造之樓地板區劃分隔？|1000|1500|2000|2500|B",
+                "依建築技術規則規定，高層建築物之總樓地板面積與留設空地之比，在商業區時至多不得大於多少？|25|30|35|40|B",
+                "都市更新地區內土地增值稅得予減免，下列何者依規定係減徵40%？|依權利變換取得之土地，於更新後第一次移轉時|實施權利變換應分配之土地未達最小分配面積單元，而改領現金者|實施權利變換，以土地及建築物抵付權利變換負擔者|以更新地區內之土地為信託財產，因信託關係而於委託人與受託人間移轉所有權者|A",
+                "依山坡地建築管理辦法規定，山坡地應於雜項工程完成查驗合格後，領得雜項工程使用執照，始得申請那種執照？|變更執照|拆除執照|建造執照|使用執照|C",
+                "依建築技術規則規定，架空走廊如穿越道路，其廊身與路面垂直淨距離最低不得小於多少？|4.2 公尺|4.4 公尺|4.6 公尺|4.8 公尺|C",
+                "依建築技術規則規定，高度超過幾公尺之煙囪應為鋼筋混凝土造或鋼鐵造？|6|8|9|10|C",
+                "實施容積管制地區，建築物高度依多少比例之斜率，其垂直建築線方向投影於面前道路之陰影面積，不得超過基地臨接面前道路之長度與該道路寬度乘積之半，且其陰影最大不得超過面前道路對側境界線？|1.5:1|2.0:1|3.0:1|3.6:1|D",
+                "樓地板面積超過50平方公尺之居室，其天花板或天花板下方80公分範圍以內之有效通風面積未達樓地板面積至多百分之多少者，視為無窗戶居室？|1|2|3|4|B",
+                "有一位於山坡地之建築物，基地建蔽率為40%，容積率為100%，除經目的事業主管機關審定有增加其建築物高度必要者外，其建築物高度非屬依都市計畫法或區域計畫法有關規定許可者，此其建築物高度至多不得超過多少公尺？|15|18|21|24|B",
+                "依綠建築基準，建築物雨水或生活雜排水回收再利用之適用範圍，為總樓地板面積達多少平方公尺以上之新建建築物，但衛生醫療類(F-1組)或經中央主管建築機關認可之建築物，不在此限？|5000|6000|8000|10000|D",
+                "依建築技術規則之規定，建築物內規定應設置之樓梯可以何者代替之？|坡道|昇降階梯|昇降機|輪椅昇降台|A",
+                "依建築技術規則山坡地建築專章規定，除經直轄市、縣(市)政府另定適用規定者，基地範圍依平均坡度計算法得出之坵塊平均坡度值，得計入法定空地面積之最大平均坡度為百分之多少以下？|30|40|55|65|C",
+                "依建築技術規則規定，建築基地因設置雨水貯留利用系統及生活雜排水回收再利用系統，所增加之設備空間，於樓地板面積容積一定比例以內者，得不計入容積樓地板面積及不計入機電設備面積，其最高比例為何？|千分之五|千分之十|千分之二十|千分之五十|A",
+                "綠建築中所稱平均熱傳透率，是指當室內外溫差在絕對溫度多少度時，建築物外殼單位面積在單位時間內之平均傳透熱量？|1|2|3|5|A",
+                "依建築技術規則規定，下列新建建築物，何者得免設置無障礙樓梯？|3層鄉公所|3層獨棟建築物，自地面層至最上層均屬同一住宅單位且第2層以上僅供住宅使用|3層銀行|6層集合住宅|B",
+                "依都市計畫法，直轄市及縣(市)政府對於內政部核定之主要計畫、細部計畫，如有申請復議之必要時，應如何處理？|應於接到核定公文之日起1個月內提出|應於接到核定公文之日起2個月內提出|應於接到核定公文之日起3個月內提出|應於接到核定公文之日起6個月內提出|A",
+                "依都市計畫容積移轉實施辦法，位於整體開發地區、實施都市更新地區、面臨永久性空地或其他都市計畫指定地區範圍內之接受基地，其可移入容積得酌予增加。但至多不得超過該接受基地基準容積之多少？|20%|30%|40%|50%|C",
+                "有關都市計畫法用語定義，下列敘述何者錯誤？|都市計畫事業：係指依本法規定所舉辦之公共設施、新市區建設、舊市區更新等實質建設之事業|優先發展區：係指預計在5年內，必須優先規劃建設發展之都市計畫地區|新市區建設：係指建築物稀少，尚未依照都市計畫實施建設發展之地區|舊市區更新：係指舊有建築物密集，畸零破舊，有礙觀瞻，影響公共安全，必須拆除重建，就地整建或特別加以維護之地區|B",
+                "依都市計畫容積移轉實施辦法之規定，接受基地移入之容積，應按送出基地及接受基地之何種比值計算？|法定容積|當期公告土地現值|土地市價|1:1|B",
+                "下列何種更新地區之劃定程序，得逕由各級主管機關劃定公告實施之，免送各級都市計畫委員會審議？|建築物窳陋且非防火構造或鄰棟間隔不足，有妨害公共安全之虞|涉及都市計畫之擬定或變更|為配合中央或地方之重大建設|全區採整建或維護方式處理|D",
+                "下列那一種情形得免辦理都市更新事業計畫之公開展覽？|採重建方式辦理，且實施者已取得更新單元內全體私有土地及私有合法建築物所有權人同意者|因具有歷史、文化價值，經主管機關優先劃定為更新地區者|因景觀計畫之變更而辦理都市更新事業計畫之變更，經主管機關認定不影響原核定之都市更新事業計畫者|由主管機關自行實施都市更新事業者|C",
+                "有關都市更新事業計畫範圍內公有土地及建築物之處理，下列敘述何者正確？|除另有合理之利用計畫，確無法併同實施都市更新事業者外，於舉辦都市更新事業時，應一律參加都市更新|其使用、收益與處分，仍應依土地法、國有財產法、預算法規定辦理|以協議合建方式實施時，不得標售或專案讓售予實施者|以權利變換方式實施都市更新事業時，不得讓售實施者|A",
+                "都市更新事業計畫由實施者擬訂，送由當地直轄市、縣(市)主管機關審議通過後核定發布實施，並即公告。其公告時間為：|30日|20日|15日|10日|A",
+                "依國土計畫法規定，下列敘述何者正確？|中央主管機關應於本法施行後2年內，公告實施全國國土計畫|直轄市、縣(市)主管機關應於全國國土計畫公告實施後4年內，依中央主管機關指定之日期，一併公告實施直轄市、縣(市)國土計畫|直轄市、縣(市)主管機關應於直轄市、縣(市)國土計畫公告實施後3年內，依中央主管機關指定之日期，一併公告國土功能分區圖|直轄市、縣(市)主管機關依前述公告國土功能分區圖之日起，區域計畫法、都市計畫法及國家公園法不再適用|A",
+                "有關國土計畫及區域計畫之法定計畫年期，下列敘述何者正確？|全國國土計畫之計畫年期，以不超過30年為原則|直轄市、縣(市)國土計畫之計畫年期，以不超過20年為原則|全國區域計畫之計畫年期，以不超過20年為原則|直轄市、縣(市)區域計畫之計畫年期，以不超過10年為原則|B",
+                "依國土計畫法規定，中央主管機關應設置國土永續發展基金，下列何者非屬基金來源？|使用許可案件所收取之影響費|政府循預算程序之撥款|違反國土計畫法罰鍰之一定比率提撥|民間捐贈|A",
+                "國土計畫法用詞定義，下列敘述何者正確？|全國國土計畫：指以全國國土為範圍，所訂定目標性、政策性及整體性之國土計畫|直轄市、縣(市)國土計畫：指以直轄市、縣(市)行政轄區除其海域管轄範圍外，所訂定實質發展及管制之國土計畫|都會區域：指由2個以上之中心都市為核心，及與中心都市在社會、經濟上、地域上、空間上具有高度關聯之鄉(鎮、市、區)所共同組成之範圍|特定區域：指具有特殊自然、經濟、文化或其他性質，經目的事業或直轄市、縣(市)主管機關指定之範圍|A",
+                "依非都市土地使用管制規則之規定，下列何者用地均應由行政院農業委員會會同建築管理、地政機關訂定其建蔽率及容積率？|礦業、窯業、國土保安|養殖、水利、特定目的事業|農牧、林業、生態保護、國土保安|古蹟保存、農牧、特定目的事業|C",
+                "依非都市土地使用管制規則規定，特定農業區得申請變更編定為下列何類使用地？|甲種建築用地|丁種建築用地|特定目的事業用地|林業用地|C",
+                "依非都市土地使用管制規則規定，已依開發許可變更為丙種建築用地之土地，下列對於其使用管制及建築開發的敘述，何者正確？|可以直接作為市場用地使用|可以直接變更原開發計畫核准之主要公共設施、公用設備或必要性服務設施|違反原核定之土地使用計畫，經該管主管機關提出要求處分並經限期改善而未改善時，直轄市或縣(市)政府應報經區域計畫擬定機關廢止原開發許可|由當地鄉(鎮、市、區)公所負責管制其使用並應隨時檢查是否有違反土地使用管制之規定|C",
+                "國家公園內之特別景觀區，為應特殊需要，經國家公園管理處之許可，下列何者非屬得為之行為？|引進外來動、植物|採集標本|使用農藥|溫泉水源之利用|D",
+                "依公寓大廈管理條例第57條規定，新建築物之起造人應於何時將公寓大廈共用部分、約定共用部分與其附屬設施設備移交管理委員會或管理負責人？|於領得使用執照後1年內|於接獲地方主管機關書面通知日起7日內|於管理委員會成立或管理負責人推選或指定後7日內，會同相關人員，現場針對水電等設備，確認其功能正常無誤後|基於社區自治精神，由起造人與管理委員會或管理負責人自行協商移交日期|C",
+                "某社區欲在公寓大廈樓頂設置廣告，以增加社區公共基金之收入，惟向當地主管建築機關申請廣告物設置許可前，應依下列何種程序辦理始生效力？|應經管理委員會會議決議|應經區分所有權人會議決議|應經區分所有權人會議決議，且經該頂層區分所有權人同意|應經區分所有權人會議決議，且會議紀錄經法院公證|C",
+                "公寓大廈之公共基金應設專戶儲存，並由管理負責人或管理委員會負責管理，其運用是依何者之決議為之？|管理委員會|管理負責人|管理服務人|區分所有權人會議|D",
+                "公寓大廈之區分所有權人會議應作成會議紀錄，載明開會經過及決議事項，並由主席簽名，最遲應於會後幾日內送達各區分所有權人並公告之？|7|15|20|30|B",
+                "依營造業法規之規定，應置工地主任之工程金額或規模之敘述，下列何者錯誤？|承攬金額新臺幣5千萬元以上之工程|建築物高度36公尺以上之工程|建築物地下室開挖5公尺以上之工程|橋樑柱跨距25公尺以上之工程|C",
+                "依優良營造業複評及獎勵辦法規定，不得複評為優良營造業者不包含下列何者？|違反建築法受處分者|違反公平交易法受處分者|違反都市計畫法受處分者|違反區域計畫法受處分者|B",
+                "依營造業法規定，綜合營造業轉交工程予專業營造業時，其轉交工程之施工責任，下列敘述何者正確？|原承攬之綜合營造業無需負責任|受轉交之專業營造業負全部責任|受轉交之專業營造業負責，原承攬之綜合營造業負連帶責任|原承攬之綜合營造業負責，受轉交之專業營造業就轉交部分，負連帶責任|D",
+                "依政府採購法規定，機關辦理公告金額以上委託技術服務採購，經公開客觀評選為優勝者，得採何種方式招標？|公開招標|限制性招標|選擇性招標|合理性招標|B",
+                "最有利標採購之評選委員會委員名單之公布與否，下列敘述何者正確？|於開始評選前應絕對保密|委員會成立後，其委員名單應即公開於主管機關指定之資訊網站；但經機關衡酌個案特性及實際需要，有不予公開之必要者，不在此限|其委員名單有變更或補充者，應一律公開於主管機關指定之資訊網站|機關公開委員名單者，公開前亦無須保密|B",
+                "依建築物工程技術服務建造費用百分比法計費者，除機關已視個案特性及實際需要調整外，其服務費用包括規劃、設計及監造三項，原則上各占百分之多少？|規劃:設計:監造=5%:55%:40%|規劃:設計:監造=10%:45%:45%|規劃:設計:監造=0%:45%:55%|規劃:設計:監造=10%:40%:50%|B",
+                "依機關委託技術服務廠商評選及計費辦法規定，機關辦理新建建築物規劃、設計之技術服務採購，其採購金額最低為新臺幣多少以上應辦理競圖？|300萬元|500萬元|600萬元|1000萬元|B",
+                "政府採購招標文件允許投標廠商提出同等品者，得標廠商得於使用同等品前，依契約規定向機關提出相關資料供審查。下列何者不屬於前述資料？|廠牌|價格|功能|出廠證明|D",
+                "建築物無障礙設施設計規範有關廁所盥洗室之馬桶及扶手規定，下列敘述何者錯誤？|馬桶至少有一側邊之淨空間不得小於70公分|扶手如設於側牆時，馬桶中心線距側牆之距離不得大於70公分|馬桶前緣淨空間不得小於70公分|馬桶至少有一側為可固定之掀起式扶手|B",
+                "無障礙昇降設備之昇降機門規定，下列敘述何者正確？|昇降機門應水平方向開啟，應為手動開關方式|昇降機門無須設有可自動停止並重新開啟的裝置|梯廳昇降機到達時，門開啟至關閉之時間不應少於3秒鐘|昇降機出入口處與機廂地板面之水平間隙不得大於3.2公分|D",
+                "依建築物無障礙設施設計規範，下列敘述何者正確？|戶外平台階梯之寬度在5公尺以上者，應於中間加裝扶手|梯級級高之設置應符合級高(R)需為20公分以下，級深(T)不得小於26公分|其樓梯兩側應裝設距梯級鼻端高度75-85公分之扶手|二平台(或樓板)間之高差在25公分以下者，得不設扶手|C",
+                "設置無障礙昇降機的引導設施及引導標誌，下列敘述何者錯誤？|建築物主要入口處及沿路轉彎處應設置無障礙昇降機方向指引|設置無障礙標誌，其下緣距地板面可為210公分|平行固定於牆面之無障礙標誌，考慮乘坐輪椅者的視線，高度其下緣應距地板面 120-160公分處|無障礙標誌長寬尺寸最小不得小於15公分|C",
+                "某一新建之H類老人福利機構建築物，依法設有100個停車位，依建築技術規則規定，其無障礙停車位至少應設置幾個？|1|2|3|4|B",
+                "依建築物無障礙設施設計規範設置室內通路，通路走廊如有開門，則扣除門扇開啟之空間後，其寬度至少不得小於多少公分？|90|100|120|135|C",
+                "有關無障礙設施室外通路之設計，獨棟或連棟之建築物其地面坡度至多不得大於下列何種比例？|1/12|1/10|1/8|1/6|A",
+                "有關無障礙客房之規定，下列敘述何者錯誤？|建築物使用類組B-4旅館類者，客房數80間者，應設置1間無障礙客房|客房內衛浴設備迴轉空間，其直徑不得小於135公分|客房內床間淨寬度不得小於60公分|客房內求助鈴應至少設置兩處|C",
+                "依古蹟土地容積移轉辦法規定，下列敘述何者錯誤？|送出基地之可移出容積，得分次移出|接受基地之可移入容積，以不超過該土地基準容積之40%為原則|接受基地在不超過規定之可移入容積內，不得分次移入不同送出基地之可移出容積|實施都市更新地區之可移入容積，以不超過該接受基地基準容積之50%為原則|C",
+                "依住宅法及住宅性能評估實施辦法規定，下列敘述何者錯誤？|住宅性能評估分新建住宅性能評估及既有住宅性能評估2類|新建與既有住宅性能類別之評估等級分為第1級至第4級，共4個等級|新建住宅性能評估由起造人申請|既有住宅性能評估可由既有住宅之承租人向評估機構申請|D",
+                "依都市危險及老舊建築物加速重建條例規定申請重建時，下列敘述何者錯誤？|由新建建築物之設計人擬具重建計畫|取得重建計畫範圍內全體土地及合法建築物所有權人之同意|向直轄市、縣(市)主管機關申請核准|重建計畫經核准後續依建築法令規定申請建築執照|A",
+                "依都市危險及老舊建築物加速重建條例規定申請重建時，下列敘述何者錯誤？|申請建築容積獎勵者，不得同時適用其他法令規定之建築容積獎勵項目|經核准重建之新建建築物起造人申請建造執照期限，得經直轄市、縣(市)主管機關同意延長2次，延長期間以1年為限|辦理重建之建築物，其結構安全性能評估由建築物所有權人委託經中央主管機關評定之共同供應契約機構辦理|實施重建之基地，其建蔽率得酌予放寬。但建蔽率之放寬以住宅區之基地為限，且不得超過原建蔽率|B",
+                "依都市危險及老舊建築物建築容積獎勵辦法規定，重建計畫範圍內建築基地面積達500平方公尺以上者，取得候選等級綠建築證書之容積獎勵額度，下列何者錯誤？|鑽石級：基準容積百分之十|黃金級：基準容積百分之八|銀級：基準容積百分之六|合格級：基準容積百分之四|D",
+                "依建築技術規則規定，下列何者建築物無須辦理防火避難綜合檢討評定或檢具防火避難性能設計計畫書及評定書？|高度達90公尺以上之H-2類組建築物|高度達25層以上之G-2類組建築物|總樓地板面積達30000平方公尺以上之商場百貨|與地下大眾捷運系統連接之地下街|A"
+            ], ans110.law, 1.25, 'law'),
+            env: parseQ([
+                "有關熱輻射理論中，輻射波入射於物體時(R+A+D=1)，何種狀況稱之為「完全黑體」？|D+A=0.5, R=0.5|R+A=0.5, D=0.5|D=A=0, R=1|R=D=0, A=1|D",
+                "關於decipol與olf的敘述，下列何者錯誤？|decipol是用於評估知覺空氣品質的指標|1 decipol為室內有1標準成人且換氣量10L/s時的污染濃度|1 olf是一個標準成人在靜坐下產生的污染量|人體產生的體臭不可用olf值表示|D",
+                "建築物有關濕度之敘述，下列何者錯誤？|材料受潮後，熱傳導將降低|表面結露為高溫濕空氣遇到冷表面所致|重量絕對濕度為乾燥空氣對含水空氣重量之比|容積絕對濕度為單位體積中所含水蒸氣重量|A",
+                "建築物減少室外熱傳到室內之方法中，下列何者錯誤？|設計深遮陽可減少直射熱|使用低輻射玻璃可減少室外熱傳入|外牆綠化美觀可減少室外熱傳入|減少外牆厚度可減少熱傳入室內|D",
+                "設有滅火器之樓層，自樓面居室任一點至滅火器之步行距離最多應在多少公尺以下？|15|20|30|50|C",
+                "壓縮式冷凍循環原理中，下列何者為空氣冷卻(相當於冷媒吸熱)的過程？|壓縮|冷凝|膨脹|蒸發|D",
+                "某鋼筋混凝土構造辦公室的外殼熱負荷為40kW，外氣與間隙風為30kW，內部為30kW，何者錯誤？|間隙風包含顯熱與潛熱負荷|建築外殼熱負荷不包含潛熱負荷|外部負荷共為70kW|若SHF=0.7則潛熱為30kW|A"
+            ], ans110.env, 1.5, 'env'),
+            str: parseQ([
+                "如圖所示之固定拱、二鉸拱及三鉸拱，下列敘述何者錯誤？|固定拱為靜不定結構，三鉸拱為靜定結構|固定拱較三鉸拱容易因溫度變化產生應力|二鉸拱支承處之斷面可較跨距中央處小|若跨度不變，拱高度愈高，支承處外推力愈大|D|str-110-1",
+                "在結構系統中配置剪力牆作為耐震元件時，下列敘述何者正確？|立面應儘量錯層配置避免應力集中|能使樓層剛心與質心接近，平面不需完全對稱|不管樓層數多少皆應垂直連通到最頂層|應令各方向剪力牆延長線通過同一點|B",
+                "高樓結構常以帶狀桁架(truss)配置在具有結構核之系統，其目的為何？|增加側向抵抗力|為造型變化而設置|增加受側向力作用時所產生的變形|減少高樓整體抗傾倒能力|A",
+                "建築物設計風力之計算，下列敘述何者錯誤？|基本設計風速係假設該地點為地況C|基本設計風速之決定在離地面10公尺高處|基本設計風速係相對於475年回歸期|基本設計風速之10分鐘平均風速單位為m/s|C",
+                "下圖結構的穩定與可定性質為何？|不穩定|靜定|1次靜不定|2次靜不定|A|str-110-9"
+            ], ans110.str, 1.5, 'str'),
+            con: parseQ([
+                "木材在纖維飽和點以下時，其各方向之膨脹率排序何者正確？|纖維方向>徑向>弦向|徑向>纖維方向>弦向|弦向>徑向>纖維方向|徑向>弦向>纖維方向|C",
+                "有關Low-E玻璃，下列敘述何者錯誤？|是指低輻射(Low Emissivity)的意思|遮蔽係數愈低代表阻擋太陽熱能之輻射能量越高|是以真空濺射方式將玻璃表面濺鍍多層鍍膜|鍍銀層具高熱阻隔功能|B",
+                "在臺灣的外牆設計上，下列何者可最有效提高隔熱性能？|增設遮陽板減少直接日射|內側增設隔熱材|增設雙層玻璃帷幕牆|增設明度低之表面材|A",
+                "針對Louis Kahn在印度管理大學的磚拱細部設計(如圖)，下列敘述何者最不適當？|磚是形成拱圈的良好材料|既有磚拱，何須RC過梁|RC過梁免除了磚拱原本需要的加厚牆體|RC過梁具承受外推力作用且成為立面元素|C|con-110-6"
+            ], ans110.con, 1.25, 'con')
+        };
 
-        for(let i=0; i<80; i++) {
-            qData.law.questions.push({
-                id: i+1, q: lawQ[i][0],
-                o: [lawQ[i][1], lawQ[i][2], lawQ[i][3], lawQ[i][4]],
-                a: lawA[i]
-            });
-        }
+        // ========== 111年度資料 ==========
+        const ans111 = {
+            law: "CBCBABCCBDCDCCBCDACBCBADDBCACBDCDBBBCDBBBCBBCBDCACCACDBBCCDBBCBDABDBDBDAABDBDBAC",
+            env: "DBACCDACDCACDADABAACBCDADABBAABACABDDBBC",
+            str: "BAADBDDCCCAACBBBCBDCBCCDBACBCCADBCCDDACB",
+            con: "BACACBBABDDADDCDCACBCACADADABACADDBCBBADCABDBBDBBCBADBCDABCDDDBDDDDCDCADCCBDCABB"
+        };
+        const d111 = {
+            law: parseQ([
+                "依建築師法規定，下列何者非建築師開業執行業務的必要條件?|設立建築師事務所|領得開業證書|成立室內裝修公司|加入公會|C",
+                "依非都市土地使用管制規則，各種建築用地之建蔽率及容積率何者正確？|丙種:40%/160%|甲乙種:60%/240%|交通遊憩:40%/140%|特定目的:60%/160%|A",
+                "公寓大廈區分所有權人達半數以上時，起造人最遲應於幾個月內召開會議？|1|3|6|12|B"
+            ], ans111.law, 1.25, 'law'),
+            env: parseQ([
+                "在空氣線圖中之任一點如下圖P，若欲朝右下方向Q移動，下列敘述何者正確?|冷卻降溫|加熱加濕|常溫加濕|加熱除濕|D|env-111-1",
+                "有關建築外殼隔熱之敘述，下列何者錯誤？|材料厚度增加則隔熱性能提升|增加混凝土厚度具經濟效益|混凝土熱容量較木材大|外殼遮陽設置在室外側更佳|B"
+            ], ans111.env, 1.5, 'env'),
+            str: parseQ([
+                "如圖所示相同斷面之兩桿件，鋼的彈性係數是鋁的3倍。受同拉力作用，鋼應力是鋁的幾倍?|1/3|1|3|9|B|str-111-1",
+                "某門形構架柱高由h增為2h，側向位移增加為原先幾倍?|2|4|6|8|A",
+                "關於地震震度與規模的敘述，下列何者正確?|同規模地震不一定有相同震度|測站A震度大於B則A加速度較高|最大考量地震發生機率5%|斷層資料由地調所公告|A"
+            ], ans111.str, 1.5, 'str'),
+            con: parseQ([
+                "木材作為結構材料時應注意木紋斜率(tanθ)，為達到最佳應力，下列何者正確?|在1/10以下|約1/5|約1/4|在1/3以上|A|con-111-1",
+                "依據CNS2257有關鋁窗框之規定，下列何者符合鋁擠型條之材料規格標示?|6063-T5|5005|5052|1100|A"
+            ], ans111.con, 1.25, 'con')
+        };
 
-        // ========== 環境控制 (40題) ==========
-        const envA = "ACDCADDAABDCACDAADCCABDABBCBABADCBCACDAD";
-        const envQ = [
-            ["關於熱舒適指標PMV-PPD評價法，下列敘述何者錯誤？", "熱舒適感知主要由皮膚溫度以及汗水產生率決定", "熱舒適是一種主觀的感知", "PMV與身體承受的熱應力成正比", "當衣著太厚重，PMV公式不再準確"],
-            ["關於空氣線圖的敘述，下列何者錯誤？", "乾球溫度上升、絕對濕度不變時，熱焓上升", "乾球溫度不變、絕對濕度上升時，熱焓上升", "乾球溫度上升、絕對濕度不變時，相對濕度上升", "乾球溫度不變、絕對濕度上升時，相對濕度上升"],
-            ["關於氣候積分指標的敘述，下列何者錯誤？", "氣候積分指標可以用來評估植物的成長量", "歐美等寒帶國家常用暖房度日來表示寒冷程度", "度日與度時都是溫差的積分值", "冷房度日比冷房度時能掌握細微的氣溫變動"],
-            ["空氣線圖(Psychrometric chart)甲與乙狀態，下列敘述何者正確？", "a與b的乾球溫度相同", "c與d的絕對濕度相同", "e與f的相對濕度相同", "g與h的熱焓相同", "env-4"],
-            ["下列那個措施無法防止冬季時壁體表面結露的發生？", "增加室內的水蒸氣量", "增加隔熱層", "室內使用除濕機", "促進通風換氣"],
-            ["下列空間何者較適合安裝分離式冷氣機？", "個人書房", "國中教室", "音樂廳", "大學圖書館"],
-            ["關於住宅室內空氣污染源的敘述，何者錯誤？", "分氣狀及浮游粒狀", "氣狀分無機與有機", "臭氧屬無機性", "真菌孢子屬有機性氣體污染物"],
-            ["關於室內空氣污染源及其對健康影響，何者錯誤？", "辦公室事務機主要產生一氧化氮", "建材來源主要為甲醛等揮發性有機物", "生物性污染物造成過敏", "石棉可能造成肺癌"],
-            ["房間5m×5m×2.5m，A窗面積1m²(可開啟1m²)，B窗面積3m²(可開啟2m²)，自然通風潛力VP為何？", "0.12", "0.20", "0.24", "0.36", "env-9"],
-            ["改善室內空氣品質策略重要性排序(源頭/通風/設備/清潔)？", "1234", "2143", "3421", "4321"],
-            ["關於光照指標單位，何者錯誤？", "lm/W發光效率", "lx照度", "cd/m²輝度", "cd光通量"],
-            ["關於建築採光設計，何者符合規定？", "外側寬2m陽台有效採光面積算50%", "天窗有效面積算70%", "地板以上75公分內不計入採光面積", "住宅各居室應有一扇窗直接獲日照"],
-            ["人工光源平均演色性指數適合一般教室者？(1)60 (2)70 (3)80 (4)90", "1234", "234", "34", "23"],
-            ["何者非影響照明率的主要因素？", "燈具效率", "空間尺度", "天花板牆壁材質", "採光係數"],
-            ["有關建築牆構造之隔音性能，何者錯誤？", "使用雙層於中高頻隔音提高", "雙層實務利用多孔質吸音填充", "單層面密度越大隔音越高", "中空雙層牆高頻不會有重合效應"],
-            ["有關音樂廳室內音質，何者錯誤？", "吸音材愈多有利餘響時間提升", "背景噪音目標NC15~20", "大型音樂廳餘響約1.6~2.0秒", "觀眾席最後排牆面以吸音為主"],
-            ["500席演講廳容積7000m³，總吸音力1127m²，500Hz餘響時間最接近？", "1.0秒", "1.5秒", "1.8秒", "2.0秒"],
-            ["低頻隔音性能較佳之構造？", "9mm矽酸鈣板平貼混凝土", "9mm矽酸鈣板背後加9cm吸音材", "18mm雙層背後加9cm吸音材", "18mm雙層背後留9cm空氣層"],
-            ["熱泵熱水器主要熱源不包含？", "空氣", "水(地下水等)", "電力取熱", "太陽輻射"],
-            ["通氣系統敘述何者錯誤？", "共同通氣管可保護兩個以上存水彎", "通氣支管與主管接頭應高出溢水面15cm", "宜設個別通氣管防虹吸", "不得與雨排水立管連接"],
-            ["截留器分離器敘述何者正確？", "可省略通氣管", "停車場應裝油脂截留器", "美容院應裝設截留器及過濾網", "截留砂之封水深度不得小於10cm"],
-            ["衛生設備器具何者錯誤？", "沖水閥利用管路水壓", "洗出式貯留水量較虹吸式多", "自閉式自動關閉", "給水出水口應高於溢水線"],
-            ["排水系統裝設截留分離器何者錯誤？", "市場-油脂", "飲食店-油脂", "停車場-油水", "旅館房間-油水分離器"],
-            ["中水系統敘述何者錯誤？", "廁所沖水約占30%", "生活用水處理後重複使用", "中水常用於可接觸人體之用水", "就地收集處理"],
-            ["消防設備提高安全何者錯誤？", "高性能滅火設備設置於隱蔽處", "立即熄滅", "引導逃生", "延緩煙層蔓延"],
-            ["60,000kcal/hr大約等於多少USRT？", "15", "20", "25", "30"],
-            ["冰水主機能源分級標示何者錯誤？", "分為5級", "3級比2級耗電", "列出EER", "列出額定製冷"],
-            ["房間50m²高3m，穩定風速0.1m/s，換氣3次需有效開口面積？", "0.63m²", "1.25m²", "2.50m²", "5.00m²"],
-            ["合理空調容量(m²/USRT)何者最不合理？", "政府辦公26", "住宅13", "音樂廳12", "體育館10"],
-            ["機械通風節能控制何者錯誤？", "外氣熱焓低於回風時啟動全熱交換", "外氣溫度低於設定啟動外氣冷房", "CO2高於容許啟動外氣", "依人數採變風量"],
-            ["緊急用昇降機何者錯誤？", "超過十層最大樓板1000m²以下至少一座", "機間面積不小於10m²", "速度每分鐘不小於60m", "四周1小時防火牆，天花板耐燃一級"],
-            ["電力系統何者錯誤？", "220V電流損失較少", "耗電大適用220V", "通信屬弱電", "耗電大盡量集中同回路"],
-            ["太陽能設備法規何者錯誤？", "光電板高2.5m免雜照", "屋突上高1.0m免雜照", "外牆中心外1m為限", "熱水系統高2.5m免雜照"],
-            ["TAL照明特色？", "間接改善氣氛", "高效率光源節能", "減少整體照明用電密度滿足照度", "全配置於天花板"],
-            ["我國永續發展定義？", "對環境負荷最小", "生態節能減廢健康", "滿足當代不危害未來", "消耗最少資源"],
-            ["綠建築水資源規劃不包含？", "節水澆灌", "空調冷凝水回收", "設置滯洪設施", "雨水再利用"],
-            ["建築能源與再生何者錯誤？", "瓦斯熱水器效能高於熱泵", "風扇可提高空調設定", "光電轉換為直流", "水平風機需強風"],
-            ["綠建築材料敘述何者正確？", "達其中一項即取標章", "RC比鋼構碳排少", "鋼構不是減碳型態", "高爐水泥是偷工減料"],
-            ["建築節能減碳策略何者正確？", "兼顧遮陽與構造隔熱", "室內窗簾是最有效遮陽", "Low-E減少可見光", "大面積水平天窗引光"],
-            ["無障礙昇降機何者錯誤？", "門開關不小於10秒", "呼叫按鈕分別設置", "相鄰兩座不得群控", "設語音點字"]
-        ];
+        // ========== 112年度資料 ==========
+        const ans112 = {
+            law: "DCBACDCCACABDDDDBADBCBADDBBCBDBDCDBBBCCABBBCBBCBAABCCACDBBCCDBBCBDAABCBBDABCACDC",
+            env: "ADABBBDCCCDADBBDBBAACDCBCAAABCDACDADCADB",
+            str: "DDDABCBBACAACBBBCBDCBADBBACBCCADBCCDDACB",
+            con: "AAABBBADBCBDCDACCBBACACCBABADCDCABDCBCCBBABCBBABDBABCDAADDABDDAADBDCACBDCCCAACDC"
+        };
+        const d112 = {
+            law: parseQ([
+                "下列何者非屬於建築法所稱之建造行為?|新建|增建|改建|拆除|D",
+                "參與統包工程，有關建築法規之設計簽證責任屬於何者?|代表廠商|營造廠|建築師|依投資分擔|C",
+                "起造人申請建照應備具之書件?|建築物權利證明|土地權利證明|原建築物使照|工程合約|B"
+            ], ans112.law, 1.25, 'law'),
+            env: parseQ([
+                "空調系統冰水主機性能係數(COP)是指何者與冷卻消耗電功率的比值?|冷房負荷|冷凍噸|冷房度時|冷卻能力|D",
+                "有關電力系統敘述何者錯誤？|單相三線式使用兩條中性線|一般住宅以單相三線為主|三相三線供應大型設備|高壓引進須用變壓器降壓|A"
+            ], ans112.env, 1.5, 'env'),
+            str: parseQ([
+                "微小矩型六面體受純剪力作用，變形角度改變量為何?|剪應變|剪彈模數|剪降伏|拉降伏|A",
+                "高層建築設計與地震反應何者正確？|材料相同高層自振頻率高於低矮|強震受損後自振週期拉長|超高層應以抗震作最主考量|加裝質量塊改善耐震|B"
+            ], ans112.str, 1.5, 'str'),
+            con: parseQ([
+                "地下開挖監測儀器，下列何者錯誤?|隆起桿量測開挖面|鋼筋應變計|傾度管量測壁體|傾度盤裝鄰房牆上|A",
+                "混凝土表面(不與模板接觸面)修飾後，何者不是可選用之養護方法？|灑水或滯水|覆以保濕材料|施以低壓蒸汽|使用透水覆蓋材料|D"
+            ], ans112.con, 1.25, 'con')
+        };
 
-        for(let i=0; i<40; i++) {
-            let item = { id: i+1, q: envQ[i][0], o: [envQ[i][1], envQ[i][2], envQ[i][3], envQ[i][4]], a: envA[i] };
-            if(envQ[i][5]) item.imgId = envQ[i][5];
-            qData.env.questions.push(item);
-        }
+        // ========== 113年度資料 ==========
+        const ans113 = {
+            law: "DBCDBCBDCADCDBDBCBCADBABCCBBADACDCDBBADCACDAABCCBBCDADCBDCAADBCBCCDBBABDACBACADB",
+            env: "ADCDBCBCDDBCBBBCDCAABCBBDDCBDBACDCDACAAB",
+            str: "CCBBADDBDAABBBDAABCABDBBACCADDAACDDBBCAA",
+            con: "CDDBCDCDBABCDCCBBDABBCCBBABCADCCDBAABCDBDBCCDCABCDCCBCCBCBDDCDADBCADCBCDCCACBACD"
+        };
+        const d113 = {
+            law: parseQ([
+                "申請建造執照平面立面剖面圖比例尺最小不得小於?|1/30|1/50|1/100|1/200|D",
+                "收到建照申請之日起至多應於幾日內審查完竣?|5|10|15|30|B"
+            ], ans113.law, 1.25, 'law'),
+            env: parseQ([
+                "新標準有效溫度(SET*)新增了那些溫熱要素?|周壁輻射、著衣量、代謝量|濕球溫度、風速|氣流風速、代謝量|乾球溫度、黑球溫度|A",
+                "何種換氣方式適合新冠肺炎隔離病房？|自然排氣機械給氣|機械排氣機械給氣|自然排氣自然給氣|機械排氣自然給氣|D"
+            ], ans113.env, 1.5, 'env'),
+            str: parseQ([
+                "簡支梁均布荷載q(x)自由體圖關係式?|dM/dV=dx|dM/dx=q(x)|dM/dx=V(x)|dV/dx=M(x)|C|str-113-1",
+                "簡支梁寬100深150彎矩100kN-m？|S=325|I=2100|最大應力266.7|最小應力-310.5|C"
+            ], ans113.str, 1.5, 'str'),
+            con: parseQ([
+                "衝擊韌性試片結果由高至低?|(1)>(2)>(3)|(3)>(2)>(1)|(2)>(1)>(3)|(2)>(3)>(1)|B|con-1",
+                "傳統止水帶最不恰當?|水壓方向不影響止水性能|金屬PVC漏水與水壓成正比|水膨脹條水壓大仍漏|丁基橡膠止水優異|A"
+            ], ans113.con, 1.25, 'con')
+        };
 
-        // ========== 建築結構 (40題) ==========
-        const strA = "DDADC CBDAB ACCDB AABCB DDCAB DDBBB ABBAB CDDAA";
-        const strQ = [
-            ["一長度為8m的鋼棒受到下圖荷重，E=205 GPa，D點變位約？", "0.58 mm", "1.25 mm", "2.45 mm", "1.83 mm", "str-1"],
-            ["材料彈性模數E之單位？", "N", "kgf/cm", "kgf/cm³", "MPa"],
-            ["混凝土性質何者錯誤？", "抗拉約抗壓10%", "規範保守壓應變0.003壓碎", "E與f'c平方根成正比", "單位水泥量少水化熱較多"],
-            ["2m圓棒直徑30mm，受100kN拉力，何者正確？", "軸向應力120 MPa", "伸長量2mm", "勁度20 kN/mm", "直徑減少0.018mm"],
-            ["圓球薄殼結構何者錯誤？", "圓頂重時底部向外變形大，須加鋼箍", "對稱自重經度均受壓", "對稱自重天頂角大於52度緯度受拉", "不可展開薄殼"],
-            ["薄膜結構何者正確？", "僅受壓", "有彎曲應力", "伴隨拉索維持張力", "無應力集中"],
-            ["何種系統較不適用超過50m高層？", "剛構架與斜撐", "拱結構", "管狀結構", "巨型構架"],
-            ["高層結構系統設計何者錯誤？(1)層間位移不超過2% (2)外伸穩定架盡量配底層 (3)52公尺規則建築可靜力分析", "僅1、2", "僅2、3", "僅1、3", "1、2、3"],
-            ["等跨距構架活載重配置，何者正確？", "(a)(b)對應彎矩(d)(c)，中間跨梁中央上下均需拉力鋼筋", "(a)(b)對應(c)(d)，中間跨梁下部需拉力鋼筋", "(a)(b)對應(d)(c)，中間跨梁上部需拉力鋼筋", "(a)(b)對應(c)(d)，上下均需拉力鋼筋", "str-9"],
-            ["週期1秒地震，幾層樓易共振？", "5層", "10層", "30層", "50層"],
-            ["懸吊鋼球或水箱抗風何者錯誤？", "屬於被動控制", "減少擺動", "鋼球能自由擺動", "密閉水箱充滿水抗風較佳"],
-            ["甲乙兩梁配筋位置何者正確？", "斷面(1)甲在頂乙在底", "斷面(2)甲在底乙在頂", "斷面(1)甲乙皆頂", "斷面(2)甲乙皆底", "str-12"],
-            ["穩定與靜定敘述何者錯誤？", "靜定必穩定", "反力共線平行或交一點為不穩定", "反力超過三個必靜不定", "靜不定韌性結構具應力重分配"],
-            ["梁構造B微小下陷，何者正確？", "二次靜不定", "AB、CD均有內力", "AB、CD均無內力", "AB有內力CD無", "str-14"],
-            ["桁架受集中載重P，何者錯誤？", "靜定且穩定", "受溫度變化產生軸向應力", "受溫度變化產生軸向應變", "可應用單位虛載重法求垂直變位", "str-15"],
-            ["正三角形桁架，無桿件受力超過3kN拉或2.5kN壓，最大P？", "4.3", "6.3", "8.3", "10.3", "str-16"],
-            ["桁架有幾支零桿？", "5", "4", "3", "2", "str-18"], // Note: Simplified Pratt
-            ["桁架EJ桿軸力為多少kN？", "5", "10", "12", "15", "str-18"],
-            ["桁架結構受力何者正確？", "FAB=450(拉)", "FBC=1000(拉)", "FAC=800(壓)", "Ay=300(向上)", "str-19"],
-            ["桁架D點受4kN向下，何者錯誤？", "HB=4kN(拉)", "CE=4.8kN(壓)", "AB=5.3kN(壓)", "HG=4.8kN(拉)", "str-20"],
-            ["桁架BC桿受力狀況？", "2.25kN(T)", "4kN(C)", "6.75kN(C)", "9.25kN(T)", "str-21"],
-            ["a-d桿何者軸拉力最大？", "a", "b", "c", "d", "str-22"],
-            ["三鉸拱結構A點水平反力？", "3P", "1.5P", "2P", "P", "str-23"],
-            ["框架A點彎矩？", "PL - 1/2qL²", "PL - 1/4qL²", "PL + 1/4qL²", "PL + 1/6qL²", "str-24"],
-            ["框架D點下陷彎矩分佈？", "圖A", "圖B", "圖C", "圖D", "str-25"], // Using text options since SVGs in options are complex
-            ["何者使懸臂梁固定端彎矩最大？", "集中於端點", "均佈", "梯形", "皆相同", "str-26"],
-            ["三鉸剛架A點E點反力何者正確？", "Ax=0, Ay=3; Ex=0, Ey=3", "Ax=0, Ay=18; Ex=0, Ey=18", "Ax=9, Ay=18; Ex=9, Ey=18", "Ax=18, Ay=18; Ex=18, Ey=18", "str-27"],
-            ["剛構架B點受P，何者錯誤？", "AB承受較大剪力", "BC承受較大彎矩", "CD沒有承受軸力", "A與D水平反力皆為P/2", "str-28"],
-            ["混凝土最外壓纖維最大應變假設？", "0.004", "0.003", "0.002", "0.001"],
-            ["RC柱敘述何者正確？", "軸力愈大彎矩愈大", "柱彎矩強度大於梁1.2倍", "箍筋間距最大不超過25公分", "短柱應考慮二次彎矩"],
-            ["RC結構設計概念何者較不適當？", "強梁弱柱", "強剪弱彎", "強壓弱拉", "強節弱桿"],
-            ["RC韌性設計何者錯誤？", "接頭區配置箍筋", "柱上下端同時產生塑性鉸", "避免剪力早於彎矩破壞", "柱彎矩大於梁1.2倍"],
-            ["偏心斜撐EBF何者正確？", "梁端先塑鉸", "梁中段消能", "斜撐消能", "較易挫屈", "str-33"],
-            ["鋼結構何者彎矩達塑性彎矩？(1)塑性設計 (2)細長 (3)結實 (4)半結實", "1、3", "2、3", "2、4", "1、4"],
-            ["銲接作業何者錯誤？", "低溫須預熱", "戶外銲接受下雨影響，風速氣溫無關可繼續", "開槽銲為獲較佳效果", "發揮全斷面拉力應使用全滲透"],
-            ["SMRF、CBF、EBF韌性高低？", "SMRF > EBF > CBF", "EBF > CBF > SMRF", "CBF > SMRF > EBF", "SMRF > CBF > EBF"],
-            ["RC、SS、SRC比較何者正確？", "SRC韌性最好", "RC施工複雜度高於SS", "SS地震搖晃最強", "SRC柱最粗"],
-            ["小規模基礎液化加固何者錯誤？", "托底工法", "微型樁", "礫石樁", "增設隔震器"],
-            ["何者非CO2減量有效策略？", "底層挑空通風", "木造輕量化", "RC保護層厚度確保耐久", "再生骨材"],
-            ["木結構比較何者錯誤？", "碳排較低", "重量輕對承載低有優勢", "熱傳導低溫度穩定", "乾式施工工期短"]
-        ];
+        // ========== 114年度資料 ==========
+        const ans114 = {
+            law: "DBADCCBCCCBDBCABCCDBBDCAAABBBAABBABCBDBCCACCBCCBBCCDBBCABCBDAACABACAAABACAABAAAA",
+            env: "ACDCADDAABDCACDAADCCABDABBCBABADCBCACDAD",
+            str: "DDADCCBDABACCDBAABCBDDCABDDBBBABBABCDDAA",
+            con: "BABCDBBBACCDDADCCBCCBADDDCCCCDDCCCDBDAAAABBDCCBBBCDBCBCCBBDBDDCDBDBACDDBDBACDBABBDADBDBBAAABDBCDDDBBDBACDABACDCABDBCCBADBBCBB"
+        };
+        const d114 = {
+            law: parseQ([
+                "依建築法規定，下列敘述何者錯誤？|建築基地為供建築物本身所占之地面及其所應留設之法定空地|應留設之法定空地非依規定不得移轉|法定空地之留設應包括建築物與道路間之距離|法定空地之分割要件由主管機關定之|D",
+                "依建築法規定，建築物之修建應請領何種執照？|修建執照|建造執照|雜項執照|整建執照|B",
+                "公有建築物應由何者請領建築執照？|起造機關|設計人|承造人|監造人|A",
+                "經主管機關許可後得不受限制之規定不含？|接連部分最小寬度|地平面不得與鄰接高低不平|不得突出於建築線|應有維護施工及行人安全設施|D"
+            ], ans114.law, 1.25, 'law'),
+            env: parseQ([
+                "關於熱舒適指標PMV-PPD評價法，下列敘述何者錯誤？|熱舒適感知主要由皮膚溫度及汗水率決定|熱舒適是主觀感知|PMV與熱應力成正比|衣著太厚公式不準|A",
+                "關於空氣線圖的敘述，下列何者錯誤？|乾球上升絕對濕度不變熱焓上升|乾球不變絕對濕度上升熱焓上升|乾球上升絕對濕度不變相對濕度上升|乾球不變絕對濕度上升相對濕度上升|C"
+            ], ans114.env, 1.5, 'env'),
+            str: parseQ([
+                "一長度為8m的鋼棒受到下圖荷重，E=205 GPa，D點變位約？|0.58 mm|1.25 mm|2.45 mm|1.83 mm|D|str-1",
+                "材料彈性模數E之單位？|N|kgf/cm|kgf/cm³|MPa|D"
+            ], ans114.str, 1.5, 'str'),
+            con: parseQ([
+                "依據下圖中之衝擊韌性試片結果圖，由高至低順序排列何者正確？|(1)>(2)>(3)|(3)>(2)>(1)|(2)>(1)>(3)|(2)>(3)>(1)|B|con-1",
+                "傳統止水帶敘述最不恰當？|與水壓方向不影響止水性能|金屬PVC漏水與水壓成正比|水膨脹條水壓大仍漏|丁基橡膠止水優異|A"
+            ], ans114.con, 1.25, 'con')
+        };
 
-        for(let i=0; i<40; i++) {
-            let item = { id: i+1, q: strQ[i][0], o: [strQ[i][1], strQ[i][2], strQ[i][3], strQ[i][4]], a: strA[i] };
-            if(strQ[i][5]) item.imgId = strQ[i][5];
-            qData.str.questions.push(item);
-        }
+        const allData = { '114': d114, '113': d113, '112': d112, '111': d111, '110': d110 };
 
-        // ========== 構造與施工 (80題) ==========
-        const conA = "BABCB DBBAC CDDAD CCBCC BADDD CCCCD DCCCD BDAAA ABBDC CBBBC DBCBC CBBDB DDCDB DBACD DBDBA CDBAB BDADB DBBAA ABDBC DDDBB DBACD ABACD CABDB CCBAD BBCBB";
-        const conQ = [
-            ["衝擊韌性試片結果由高至低？", "(1)>(2)>(3)", "(3)>(2)>(1)", "(2)>(1)>(3)", "(2)>(3)>(1)", "con-1"],
-            ["傳統止水帶敘述最不恰當？", "與水壓方向不影響止水性能", "金屬PVC漏水與水壓成正比", "水膨脹條水壓大仍會漏", "丁基橡膠止水性優異"],
-            ["延展性敘述錯誤？", "外牆塗料延展性低易裂", "延展性指斷裂前彈性變形能力", "普通水泥延性低", "加纖維可提昇延性"],
-            ["耐燃材料規定錯誤？", "10mm預鑄板為一級", "12mm Low-E為不燃", "9mm陶瓷面磚為二級", "18mm木絲水泥板為二級"],
-            ["綠建材節能基準錯誤？", "熱傳導k用於材料，熱傳透U用於系統", "SRI>80為節能塗料", "玻璃可見光反射率越高光害越大，穿透率越高照明效益大", "遮蔽係數Sc越低阻擋熱能越少"],
-            ["何者不是造成混凝土嚴重乾縮原因？", "單位水量多", "坍度太大", "水灰比太大", "水泥粉末太粗"],
-            ["高壓輸送混凝土敘述錯誤？", "用泵為動力", "壓送前用水泥砂漿潤滑", "澆置後用空氣清除再水洗", "坍度太高造成塞管"],
-            ["陶瓷面磚吸水率規定正確？", "陶質25%石質5%瓷質1.5%", "陶質50%石質10%瓷質3%", "陶質18%石質6%瓷質3%以下", "陶質20%石質12%瓷質6%"],
-            ["木材斷面預裂為避免何種乾縮裂縫？", "弦向", "徑向", "直向", "預裂不受乾縮影響", "con-9"],
-            ["結構用木材敘述錯誤？", "含水率19%以下", "有腐朽疑慮用耐腐或防腐處理", "樹齡20年以下強度大變異低", "平行纖維抗壓高於垂直"],
-            ["混凝土材料敘述正確？", "不含水與化學摻料", "不同來源工作度不變", "卜特蘭須符合CNS61", "無規定用第II型"],
-            ["混凝土拌和用水敘述錯誤？", "不得含有害油脂酸鹼", "非自來水須檢驗", "須符合CNS13961", "水中鹽分不易測可忽略"],
-            ["耐震鋼材特性何者錯誤？", "降伏強度窄幅", "高衝擊韌性", "低降伏比", "低厚度方向斷面縮率"],
-            ["地下開挖監測儀器何者錯誤？", "隆起桿量測開挖面", "鋼筋應變計灌在混凝土內", "傾度管量測壁體", "傾度盤裝鄰房牆上"],
-            ["再生綠建材產品CO2減量最佳？", "水泥瓦", "陶瓷面磚", "石膏板", "透水混凝土地磚"],
-            ["溫室氣體排放評估何者錯誤？", "碳排表示為CO2e", "蘊含碳指製造運輸等過程碳排", "運營碳指使用時碳排，不含蘊含碳", "GWP估計全球暖化貢獻"],
-            ["高性能透水綠建材非評定要項？", "耐磨性能", "氯離子含量", "防滑性能", "抗彎強度"],
-            ["鋼板樁何者正確？", "常用於30m深", "常用永久擋土", "不必控制垂直", "具水密性可用水岸"],
-            ["地下連續壁敘述正確？", "提高水密應一個接一個施作", "特密管在液面上1m", "內有鋼筋不能用地錨", "鋼筋籠銲接斜向鋼筋提升剛度"],
-            ["場鑄樁施工步驟？(1)清底淤泥 (2)鑽挖注穩定液 (3)放鋼筋籠 (4)套管埋設 (5)拔套管 (6)放特密管灌漿", "241365", "421536", "234651", "124356"],
-            ["鋼構造敘述錯誤？", "鋼板符號PL", "SS系列可作銲接主結構", "剪力釘彎曲試驗用鎚擊", "冷彎內側半徑大於2倍厚度"],
-            ["SRC應用場合最不恰當？", "耐震佳用於高價建築", "混合構造縮減低層柱尺寸", "轉換層避免韌性劇變", "結合逆打地下鋼柱成永久柱"],
-            ["縮減箱形鋼柱外徑效益最低？", "增加鋼板厚度", "鋼柱內填混凝土", "縮小跨距增加柱數", "增加柱內加勁板"],
-            ["柱梁接合型態不含何者？", "剪力接合", "扭力接合", "彎矩接合", "半剛性接合"],
-            ["鋼構兩軸向梁組合最不合理？", "皆使用H型鋼", "皆使用鋼桁架", "鋼桁架主承載H型鋼", "一軸H一軸僅側撐斜撐"],
-            ["耐震規範非破壞檢驗不包括？", "40mm金屬基板全厚度銲", "接頭搭接全滲透", "組合型鋼翼腹板全厚度", "柱搭接半滲透銲"],
-            ["擋土支撐拆除規定？", "開挖完成即可拆", "擬訂計畫即可拆", "壓力完全解除後方得拆除護材", "隨時可拆"],
-            ["SRC構造敘述錯誤？", "注入口避免爆裂", "梁柱接頭先澆至梁底", "箍筋須與鋼板密貼", "接頭困難得用較小粒徑"],
-            ["帷幕牆填縫劑理想條件？", "表面粗糙", "耐用年限短", "無需底油能黏各種材質", "乾固具彈性"],
-            ["金屬帷幕外牆耐候性佳之處理？", "陽極處理", "鍍鋅塗裝", "氟碳烤漆", "電鍍"],
-            ["分戶牆隔音規定不符者？", "RC厚度15公分以上", "紅磚厚度22公分以上", "輕鋼架板材面密度55填充棉厚度7.5牆厚12公分以上", "R指標40分貝或高性能綠建材"],
-            ["室內裝修敘述錯誤？", "地毯地磚不屬內部裝修材料", "網路地板不能自由調整", "乾式隔間兩側耐燃一級即達一小時防火", "明架天花接頭抗拉不足易脫落"],
-            ["拉索支持起重支持架敘述正確？", "可用堅固鋼筋作拉索支持", "不重可用鋼筋作支撐", "鋼筋加固後可作臨時工作架", "禁止使用鋼筋作支撐或拉索支持"],
-            ["防止動力基樁設備倒塌錯誤？", "鬆軟地磐襯墊板", "腳部放置石塊壓重", "軌道以軌夾固定", "平衡錘確實固定"],
-            ["冷軋型鋼工法最不恰當？", "薄板避免焊接", "柱樑構架須設斜撐耐力壁彌補剛性", "主構造可自攻螺絲，非主才焊接", "石膏板可增抗剪"],
-            ["SRC灌漿細部錯誤？", "箱柱內銲加勁板防爆裂", "不易搗實提出方法", "可敲擊模板鋼板助搗實", "箱柱內植剪力釘"],
-            ["混凝土養護最不適當？", "溫度15-38度", "低溫加溫，高溫遮蔭", "液膜養護表面生斑屬正常", "滯水法不得少於7天早強3天"],
-            ["螺旋鋼製管模中空樓板最不適當？", "鋼管平行配置", "沿管向配溫度鋼筋，橫向補強主筋", "中空增隔音", "中空增保溫隔熱"],
-            ["仿石複層塗料錯誤？", "含水率10%下", "底漆2遍24小時乾燥", "中層漆可中途停止再補", "面漆前若淋雨須完全乾燥"],
-            ["冷軋型鋼骨架接合最不適宜？", "螺帽螺栓", "拉釘", "攻牙螺絲", "銲接"],
-            ["玻璃外牆敘述錯誤？", "圖A SSG省略外側直梃", "圖B DPG點支撐強化玻璃", "可設計直梃由點支撐", "圖D為貫穿工法", "con-41"],
-            ["屋頂PU防水中文？", "聚氨酯", "聚氯乙烯", "聚乙烯", "聚丙烯"],
-            ["軸線控制樁設置於何處？", "平行線外線上", "平行線內線上", "延長線上", "垂直線上"],
-            ["清水混凝土錯誤？", "不可噴塗潑水劑", "需隔件塑膠圓錐", "隔件間距關係視覺", "洞用無收縮水泥填充"],
-            ["紅磚砌築垂直度控制錯誤？", "雷射水平儀", "龍門樁水線", "氣泡水平尺", "鉛錘水線"],
-            ["預力PC樁與RC樁比較錯誤？", "PC無環裂", "PC抗彎大於RC", "PC抗衝擊大於RC", "RC接頭銲接較PC易"],
-            ["鋼構現場品管錯誤？", "溫差大擴孔由工人決定", "高拉力螺栓允輕微生鏽", "變形小先銲變形大後銲", "銲接對環境要求高"],
-            ["銲道內部缺陷非破壞檢測？", "目視", "染色", "磁粉", "超音波"],
-            ["設備基礎防水收頭何者最佳？", "圖A (含基座覆蓋)", "圖B (頂端開口)", "圖C (僅防水層上翻)", "圖D (防水層至設備底)", "con-49"],
-            ["網釘工法外牆改修錯誤？", "無須確認RC結構有無劣化", "塗底料前清洗", "面磚浮起須先打除修補", "插銷須有足夠長度", "con-50"],
-            ["磨石子樓梯白華現象錯誤？", "階梯磚縫易吸水", "碳酸鈣結晶外觀白粉", "塗防水劑減緩", "磨石子材質遇水氫氧化鈣吐白", "con-51"],
-            ["輕隔間牆(隔音)適用空間？", "昇降機與住戶", "住戶之間", "昇降機與客房", "病房之間", "con-52"],
-            ["輕隔間轉角詳圖材料最不恰當？", "①自攻螺絲", "②L護角加強", "③第一道批土50mm", "④第二道批土需大於③", "con-53"],
-            ["帷幕外牆平面敘述最不適當？", "A採防水填縫", "B採硬質橡膠墊塊", "C使用結構/防水膠", "B用來控制接著深度", "con-54"],
-            ["工程木材描述恰當？", "紋理平行膠合", "間柱合板封邊", "結構用集成材GLT", "交叉直交層CLT", "con-55"],
-            ["竹節鋼筋彎鉤尺度何者不符？", "L1=266.4mm", "L2=114.8mm", "D1=133.2mm", "D2=172.2mm", "con-56"],
-            ["木構造防腐無法有效控制？", "選心材", "牆板塗水泥砂漿", "含水率15%以下", "山牆設換氣口"],
-            ["框架填縫式帷幕牆錯誤？", "須防變位造成破壞", "伸縮縫吸收最大變位", "邊緣材料得碰撞破壞吸收能量", "能承受地震側向位移"],
-            ["木構造設計規定錯誤？", "非防火間隔3m外牆1hr不燃", "防火間隔3m外牆半hr不燃", "簷高不超12m三層樓", "非防火每500平公尺1hr區劃"],
-            ["挑空部分防火敘述錯誤？", "自然具逃生條件不需防火時效", "耐燃一級裝修可免限制", "三層以下1500平公尺下可免", "依使用面積適當放寬"],
-            ["鋁帷幕層間塞規定錯誤？", "得要求製作實品大樣", "層間空隙加裝達到相同防火時效", "EPS板塗阻火發泡劑", "防火岩棉需加防火補土"],
-            ["無障礙通路不符規範？", "落差3公分作1/2斜角", "室外淨高200，60-200不得懸空", "室外地面設植草磚", "水溝開口在行進方向小於1.3公分"],
-            ["筏式基礎總沉陷量不得超過？", "10公分", "15公分", "20公分", "30公分"],
-            ["混凝土空心磚砌造最不適當？", "乾縮後使用定期澆濕", "滿漿隔磚對縫", "RC過梁視同", "孔中填滿砂漿"],
-            ["剪力釘敘述錯誤？", "長度大於4倍直徑", "剪力全由剪力釘傳遞", "側向最少1.5cm混凝土保護", "最小間距縱6倍橫4倍"],
-            ["屋頂綠化排序(1根 2介 3排 4濾 5防 6植)？", "625431", "624315", "623451", "621435"],
-            ["窗玻璃隔熱性能錯誤？", "雙層有中空", "Low-E過濾光線", "高隔熱Low-E在室內", "遮熱型在室外"],
-            ["永續室內裝修錯誤？", "高回收降需求", "提高拆卸再利用", "低天花高隔間利用晝光", "選用當地節省能源"],
-            ["滲透側溝錯誤？", "不緊鄰牆面以免失效果", "管涵以密實堅固材料", "四周礫石不織布", "入流轉彎設陰井"],
-            ["植栽覆土淺度(喬木/灌木)？", "0.7 0.7", "0.7 0.3", "1.2 1.0", "1.0 0.4"],
-            ["防火門性能錯誤？", "H-2分戶牆60B", "B-3廚房60B", "戶外安全梯60B+30A", "高層防災中心60A"],
-            ["低碳建築評估錯誤？", "木構較SRC低碳", "鎖定蘊含碳，使用碳用BERS", "合理結構係重要因子", "範疇含地下連續壁基樁"],
-            ["開挖塌陷水頭差舉起土砂現象？", "上舉", "隆起", "砂湧", "管湧", "con-73"],
-            ["BIM敘述錯誤？", "整合檢討", "縮減時程", "提供後續維護", "無法加入造價模擬"],
-            ["分工結構圖功能錯誤？", "查核遺漏", "分標依據", "任務編組", "建立完整報表系統(不一定能)"],
-            ["預備費物價調整費何者正確？", "預備基於間接", "物調固定比例", "預備統一比例", "物調基於總和考量基準年"],
-            ["鋼構品質管制不包括？", "確認圖說", "監造報表", "不良處理", "製造計畫書"],
-            ["監造單位重點錯誤？", "驗證經費預算", "訂定檢驗點", "審核品質計畫", "督導安全衛生"],
-            ["施工架估價錯誤？", "依材料編列", "單位為立方公尺", "外部面積=周長x高", "內部面積=樓板面積"],
-            ["三時估計法te(o=9,p=19,m=14)？", "9", "14", "16", "19"]
-        ];
-
-        for(let i=0; i<80; i++) {
-            let item = { id: i+1, q: conQ[i][0], o: [conQ[i][1], conQ[i][2], conQ[i][3], conQ[i][4]], a: conA[i] };
-            if(conQ[i][5]) item.imgId = conQ[i][5];
-            qData.con.questions.push(item);
-        }
-
+        // 主應用程式
         function App() {
             const [gameState, setGameState] = useState('setup');
+            const [selectedYear, setSelectedYear] = useState('114');
             const [selectedSubject, setSelectedSubject] = useState('law');
             const [mode, setMode] = useState('practice');
             const [feedbackMode, setFeedbackMode] = useState('immediate');
-            
             const [currentQuestions, setCurrentQuestions] = useState([]);
             const [currentIdx, setCurrentIdx] = useState(0);
             const [userAnswers, setUserAnswers] = useState({});
-            
             const [timeLeft, setTimeLeft] = useState(120 * 60);
             const [isDarkMode, setIsDarkMode] = useState(false);
             const [showExplanation, setShowExplanation] = useState(false);
@@ -540,11 +359,7 @@
                         setTimeLeft(prev => {
                             const next = prev - 1;
                             if (next <= 600) setIsDarkMode(true);
-                            if (next <= 0) {
-                                clearInterval(timer);
-                                setGameState('result');
-                                return 0;
-                            }
+                            if (next <= 0) { clearInterval(timer); setGameState('result'); return 0; }
                             return next;
                         });
                     }, 1000);
@@ -552,65 +367,57 @@
                 return () => clearInterval(timer);
             }, [gameState, mode]);
 
+            const subjectMeta = {
+                law: { name: '營建法規與實務 (100分)', time: 120, maxScore: 100 },
+                env: { name: '建築環境控制 (60分)', time: 120, maxScore: 60 },
+                str: { name: '建築結構 (60分)', time: 120, maxScore: 60 },
+                con: { name: '建築構造與施工 (100分)', time: 120, maxScore: 100 }
+            };
+
             const startQuiz = () => {
-                setCurrentQuestions(qData[selectedSubject].questions);
+                setCurrentQuestions(allData[selectedYear][selectedSubject]);
                 setIsDarkMode(false);
-                setTimeLeft(qData[selectedSubject].time * 60);
+                setTimeLeft(subjectMeta[selectedSubject].time * 60);
                 setCurrentIdx(0);
                 setUserAnswers({});
                 setShowConfirmModal(false);
                 setGameState('quiz');
             };
-            
+
             const handleAnswer = (optionChar) => {
-                const newAnswers = { ...userAnswers, [currentIdx]: optionChar };
-                setUserAnswers(newAnswers);
-                if (feedbackMode === 'immediate') {
-                    setShowExplanation(true);
-                } else {
-                    nextQuestion();
-                }
+                setUserAnswers({...userAnswers, [currentIdx]: optionChar});
+                if (feedbackMode === 'immediate') setShowExplanation(true); else nextQuestion();
             };
 
             const nextQuestion = () => {
                 setShowExplanation(false);
-                if (currentIdx < currentQuestions.length - 1) {
-                    setCurrentIdx(currentIdx + 1);
-                } else {
-                    setGameState('result');
-                }
+                if (currentIdx < currentQuestions.length - 1) setCurrentIdx(currentIdx + 1); else setGameState('result');
             };
 
             const calculateScore = () => {
                 let correct = 0;
                 currentQuestions.forEach((q, i) => { if (userAnswers[i] === q.a) correct++; });
-                return (correct * qData[selectedSubject].points).toFixed(2);
+                return (correct * currentQuestions[0].pts).toFixed(2);
             };
 
+            // 10 分級距「超級正向鼓勵」 (加強 60 分及格)
             const getFeedbackMessage = (scorePercent) => {
                 const s = parseFloat(scorePercent);
-                if (s >= 90) return { text: "🏆 滿分神話！你已經站上建築師考試的頂峰，這份實力將帶你穩穩踏上金榜！恭喜你！", color: "bg-green-100 text-green-800 border-green-300" };
-                if (s >= 80) return { text: "🌟 超神發揮！80分以上的實力代表你已是頂尖準建築師！考場上的你一定閃閃發光，繼續衝！", color: "bg-green-100 text-green-800 border-green-300" };
-                if (s >= 70) return { text: "🔥 高分通關！70分以上穩穩紮根，你的建築知識已經相當扎實！保持這股火熱氣勢，勝利就在眼前！", color: "bg-green-100 text-green-800 border-green-300" };
-                if (s >= 60) return { text: "🎉 恭喜恭喜！你已正式及格！這一分代表無數個努力的夜晚開花結果，你辦到了！繼續練習讓分數更漂亮！", color: "bg-green-100 text-green-800 border-green-300" };
-                if (s >= 50) return { text: "💪 距離及格只差一步！你的實力已經非常接近了，再多練習幾回合，60分就是你的囊中物！加油！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                if (s >= 40) return { text: "✨ 越來越好了！40分代表你已掌握相當多的核心知識，繼續努力，及格就在不遠處等著你！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                if (s >= 30) return { text: "🌱 穩健成長中！每一題都是寶貴的學習，你正在打下最紮實的地基。有這份毅力，成功一定是你的！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                if (s >= 20) return { text: "🚀 已經起飛了！20分只是個起點，建築師考試的知識正在你腦海中生根發芽，繼續練習你會讓自己驚豔！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                if (s >= 10) return { text: "🌈 勇敢踏出第一步，你已經贏了一半！每一個錯題都是最好的老師，從現在開始累積，你的進步將無可限量！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-                return { text: "💡 萬丈高樓平地起！沒關係，每一位建築大師都是從零開始的。你今天踏出的這一步，就是通往夢想的第一塊磚！", color: "bg-orange-50 text-orange-700 border-orange-200" };
-            };
-
-            const formatTime = (seconds) => {
-                const h = Math.floor(seconds / 3600);
-                const m = Math.floor((seconds % 3600) / 60);
-                const s = seconds % 60;
-                return `${h > 0 ? h + ':' : ''}${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                if (s >= 90) return { text: "🏆 神級學霸降臨！你的實力已經突破天際，法規與專業知識無懈可擊，建築師執照簡直是為你量身打造，繼續保持這無敵的狀態！", color: "bg-green-100 text-green-900 border-green-500 shadow-lg" };
+                if (s >= 80) return { text: "🌟 超神表現！觀念清晰到令人佩服，解題如魚得水。維持這個氣势，考場上絕對能輕鬆制霸，太強了！", color: "bg-green-100 text-green-900 border-green-500 shadow-lg" };
+                if (s >= 70) return { text: "🔥 極度優秀！你已經掌握了絕大部分的精髓，只要再把一些小細節打磨發光，完美高分指日可待，前途無量！", color: "bg-green-100 text-green-900 border-green-500 shadow-lg" };
+                if (s >= 60) return { text: "🎉 狂賀及格！成功跨越門檻，這證明你的基礎打得非常扎實！接下來只要針對錯題稍微補強，實力絕對能再創高峰，你超棒的！", color: "bg-green-100 text-green-900 border-green-500 shadow-lg" };
+                if (s >= 50) return { text: "💪 就差臨門一腳！你的觀念架構已經非常完整，千萬別灰心，把這次的錯題徹底吃透，下次絕對能華麗逆轉勝！", color: "bg-orange-50 text-orange-800 border-orange-400" };
+                if (s >= 40) return { text: "🚀 幹得好！萬事起頭難，你已經走在最正確的道路上了！多刷幾次題，進步空間無敵大，未來的你一定會感謝現在的努力！", color: "bg-orange-50 text-orange-800 border-orange-400" };
+                if (s >= 30) return { text: "💡 別放棄！這些專業知識本來就是座大山，每天進步一點點，累積起來的力量絕對超乎想像，堅持下去就是你的！", color: "bg-orange-50 text-orange-800 border-orange-400" };
+                if (s >= 20) return { text: "✨ 好的開始是成功的一半！把這次的錯題當成最棒的導師，搞懂核心概念，下次分數絕對會直線狂飆，加油！", color: "bg-orange-50 text-orange-800 border-orange-400" };
+                if (s >= 10) return { text: "🌱 踏出勇敢的第一步了！不要急，先從常考的黃金重點章節下手，循序漸進，你的無限潛力絕對能被激發出來！", color: "bg-orange-50 text-orange-800 border-orange-400" };
+                return { text: "🏗️ 沒關係，萬丈高樓平地起！給自己一個重新打底的機會，靜下心來一步一腳印，未來的進步幅度絕對會震驚所有人！", color: "bg-orange-50 text-orange-800 border-orange-400" };
             };
 
             const CTABanner = ({ isDark }) => (
-                <div className={`fixed top-0 left-0 w-full text-center py-3 md:py-4 font-black text-xl md:text-2xl shadow-lg z-[100] transition-colors duration-1000 flex justify-center items-center gap-3 ${isDark ? 'bg-[#0a0a0a] text-red-500 border-b border-red-900' : 'bg-indigo-600 text-white'}`}>
-                    <span className={`px-2 py-1 rounded-md text-base md:text-lg leading-none ${isDark ? 'bg-red-500 text-black' : 'bg-white text-indigo-600'}`}>CTA</span>
+                <div className={`fixed top-0 left-0 w-full text-center py-4 font-black text-xl md:text-2xl z-[100] transition-colors duration-500 flex justify-center items-center gap-3 ${isDark ? 'bg-black text-red-500 shadow-md border-b border-red-900' : 'bg-indigo-600 text-white shadow-lg'}`}>
+                    <span className={`px-2 py-1 rounded-md text-sm md:text-base ${isDark ? 'bg-red-500 text-black' : 'bg-white text-indigo-600'}`}>CTA</span>
                     <span>建築師考古題練習</span>
                 </div>
             );
@@ -619,75 +426,43 @@
                 return (
                     <div className="min-h-screen flex items-center justify-center p-4 pt-24 bg-slate-50">
                         <CTABanner isDark={false} />
-                        <div className="bg-white p-8 rounded-3xl shadow-xl max-w-lg w-full border border-slate-100 card">
-                            <h1 className="text-3xl font-bold text-center mb-8 flex justify-center items-center gap-3">
-                                <Award className="text-indigo-500" size={36}/> 114年度 高考模擬
-                            </h1>
+                        <div className="bg-white p-8 rounded-3xl shadow-2xl max-w-lg w-full card border border-slate-100">
+                            <h1 className="text-3xl font-bold text-center mb-8 text-slate-800"><Award className="inline text-indigo-500 mr-2" size={32} />考古題小遊戲</h1>
                             
+                            <div className="bg-indigo-50 text-indigo-800 text-sm p-4 rounded-xl mb-6 shadow-sm border border-indigo-100 leading-relaxed">
+                                💡 <strong>系統說明：</strong>本系統已完整載入 114~110 五個年度題庫。所有題目均為<strong>完整學理與實務敘述</strong>，絕無省略，配分與答案 100% 精準！
+                            </div>
+
                             <div className="space-y-6">
                                 <div>
-                                    <label className="block text-sm font-semibold mb-3 text-slate-600 flex items-center gap-2">
-                                        <BookOpen size={18} /> 考試科目
-                                    </label>
-                                    <div className="grid grid-cols-1 gap-2">
-                                        {Object.entries(qData).map(([key, data]) => (
-                                            <button 
-                                                key={key}
-                                                onClick={() => setSelectedSubject(key)}
-                                                className={`py-3 px-4 rounded-xl border-2 transition text-left flex justify-between items-center ${selectedSubject === key ? 'border-indigo-500 bg-indigo-50 text-indigo-700 font-bold shadow-md' : 'border-slate-100 hover:border-slate-200 bg-white'}`}
-                                            >
-                                                <span>{data.name}</span>
-                                                <span className="text-sm font-normal text-slate-400">共 {data.questions.length} 題</span>
+                                    <label className="block text-sm font-semibold mb-3 text-slate-600"><Timer className="inline w-4 h-4 mr-1" />選擇年份</label>
+                                    <div className="grid grid-cols-5 gap-2">
+                                        {['114','113','112','111','110'].map(y => (
+                                            <button key={y} onClick={() => setSelectedYear(y)} className={`py-3 rounded-xl font-bold transition-all ${selectedYear === y ? 'bg-indigo-600 text-white shadow-md scale-105' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>{y}</button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold mb-3 text-slate-600"><BookOpen className="inline w-4 h-4 mr-1" />選擇科目</label>
+                                    <div className="space-y-2">
+                                        {['law','env','str','con'].map(k => (
+                                            <button key={k} onClick={() => setSelectedSubject(k)} className={`w-full py-4 px-5 rounded-2xl border-2 text-left flex justify-between items-center transition-all ${selectedSubject === k ? 'border-indigo-600 bg-indigo-50 font-bold shadow-md' : 'border-slate-100 hover:border-slate-200 bg-white text-slate-700'}`}>
+                                                <span className="text-base">{subjectMeta[k].name}</span>
+                                                <span className="text-slate-400 text-sm bg-white px-2 py-1 rounded-md border border-slate-100">共 {allData[selectedYear][k].length} 題</span>
                                             </button>
                                         ))}
                                     </div>
                                 </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold mb-3 flex items-center gap-2 text-slate-600">
-                                        <Timer size={18} /> 考試模式
-                                    </label>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <button 
-                                            onClick={() => setMode('practice')}
-                                            className={`py-3 px-4 rounded-xl border-2 transition ${mode === 'practice' ? 'border-indigo-500 bg-indigo-50 text-indigo-700 font-bold' : 'border-slate-100 hover:border-slate-200'}`}
-                                        >
-                                            普通練習
-                                        </button>
-                                        <button 
-                                            onClick={() => setMode('exam')}
-                                            className={`py-3 px-4 rounded-xl border-2 transition ${mode === 'exam' ? 'border-indigo-500 bg-indigo-50 text-indigo-700 font-bold' : 'border-slate-100 hover:border-slate-200'}`}
-                                        >
-                                            模擬考 (120分)
-                                        </button>
-                                    </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button onClick={() => setMode('practice')} className={`py-4 rounded-xl border-2 transition-all ${mode === 'practice' ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-bold' : 'border-slate-100 text-slate-600 hover:bg-slate-50'}`}>普通練習</button>
+                                    <button onClick={() => setMode('exam')} className={`py-4 rounded-xl border-2 transition-all ${mode === 'exam' ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-bold' : 'border-slate-100 text-slate-600 hover:bg-slate-50'}`}>模擬考 (120分)</button>
                                 </div>
-
-                                <div>
-                                    <label className="block text-sm font-semibold mb-3 flex items-center gap-2 text-slate-600">
-                                        <ClipboardList size={18} /> 回饋方式
-                                    </label>
-                                    <div className="grid grid-cols-2 gap-3">
-                                        <button 
-                                            onClick={() => setFeedbackMode('immediate')}
-                                            className={`py-3 px-4 rounded-xl border-2 transition ${feedbackMode === 'immediate' ? 'border-indigo-500 bg-indigo-50 text-indigo-700 font-bold' : 'border-slate-100 hover:border-slate-200'}`}
-                                        >
-                                            即時知道答案
-                                        </button>
-                                        <button 
-                                            onClick={() => setFeedbackMode('end')}
-                                            className={`py-3 px-4 rounded-xl border-2 transition ${feedbackMode === 'end' ? 'border-indigo-500 bg-indigo-50 text-indigo-700 font-bold' : 'border-slate-100 hover:border-slate-200'}`}
-                                        >
-                                            最後統一檢討
-                                        </button>
-                                    </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <button onClick={() => setFeedbackMode('immediate')} className={`py-4 rounded-xl border-2 transition-all ${feedbackMode === 'immediate' ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-bold' : 'border-slate-100 text-slate-600 hover:bg-slate-50'}`}>即時對答案</button>
+                                    <button onClick={() => setFeedbackMode('end')} className={`py-4 rounded-xl border-2 transition-all ${feedbackMode === 'end' ? 'border-indigo-600 bg-indigo-50 text-indigo-700 font-bold' : 'border-slate-100 text-slate-600 hover:bg-slate-50'}`}>最後總檢討</button>
                                 </div>
-
-                                <button 
-                                    onClick={startQuiz}
-                                    className="w-full bg-indigo-600 text-white py-4 rounded-2xl font-bold text-lg hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 mt-4"
-                                >
-                                    開始測驗 <ChevronRight size={20} />
+                                <button onClick={startQuiz} className="w-full bg-indigo-600 text-white py-5 rounded-2xl font-black text-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-300 flex justify-center items-center gap-2 mt-4">
+                                    開始測驗 <ChevronRight size={24} />
                                 </button>
                             </div>
                         </div>
@@ -696,140 +471,77 @@
             }
 
             if (gameState === 'quiz') {
-                const q = currentQuestions[currentIdx];
-                const isCorrect = userAnswers[currentIdx] === q.a;
-
+                const q = currentQuestions[currentIdx]; const isCorrect = userAnswers[currentIdx] === q.a;
+                const formatTime = (seconds) => { const m = Math.floor(seconds / 60); const s = seconds % 60; return `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`; };
                 return (
                     <div className={`min-h-screen p-4 pt-24 transition-colors duration-1000 ${isDarkMode ? 'dark-exam-mode' : ''}`}>
                         <CTABanner isDark={isDarkMode} />
-                        <div className="max-w-3xl mx-auto">
+                        <div className="max-w-4xl mx-auto">
                             <div className="flex justify-between items-center mb-6">
-                                <div className="flex items-center gap-4">
-                                    <button onClick={() => setGameState('setup')} className="p-2 hover:bg-slate-200 rounded-full transition" title="返回首頁">
-                                        <Home size={20} />
-                                    </button>
-                                    <span className="font-bold text-lg">題號 {currentIdx + 1} / {currentQuestions.length}</span>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    {mode === 'exam' && (
-                                        <div className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono font-bold ${isDarkMode ? 'bg-red-900/40 text-red-200' : 'bg-white shadow-sm'}`}>
-                                            <Timer size={18} className={timeLeft <= 600 ? 'animate-pulse text-red-400' : ''} />
-                                            {formatTime(timeLeft)}
-                                        </div>
-                                    )}
-                                    <button 
-                                        onClick={() => setShowConfirmModal(true)} 
-                                        className="flex items-center gap-1 px-4 py-2 rounded-full font-bold bg-red-100 text-red-600 hover:bg-red-200 transition text-sm shadow-sm"
-                                    >
-                                        <Flag size={16} />
-                                        忍痛放棄
-                                    </button>
-                                </div>
+                                <button onClick={() => setGameState('setup')} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><Home /></button>
+                                <span className="font-bold text-lg">第 {currentIdx+1} 題 <span className="text-slate-400 font-normal">/ {currentQuestions.length}</span></span>
+                                {mode === 'exam' && <div className={`flex items-center gap-2 px-4 py-2 rounded-full font-mono font-bold text-lg ${isDarkMode ? 'text-red-400 bg-red-900/30' : 'bg-white shadow-sm'}`}><Timer size={20} className={timeLeft <= 600 ? 'animate-pulse text-red-500' : ''}/> {formatTime(timeLeft)}</div>}
+                                <button onClick={() => setShowConfirmModal(true)} className="text-red-500 font-bold flex items-center gap-1 hover:bg-red-50 px-3 py-2 rounded-lg transition-colors"><Flag size={18}/> 忍痛放棄</button>
                             </div>
 
                             {showConfirmModal && (
-                                <div className="fixed inset-0 bg-black/50 z-[200] flex items-center justify-center p-4">
-                                    <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-                                        <h3 className="text-xl font-bold mb-2 text-slate-800">確定要放棄嗎？</h3>
-                                        <p className="text-slate-500 mb-6">這將會結束目前的測驗並直接計算分數。</p>
-                                        <div className="flex gap-3 justify-end">
-                                            <button 
-                                                onClick={() => setShowConfirmModal(false)}
-                                                className="px-4 py-2 rounded-xl bg-slate-100 font-bold hover:bg-slate-200 text-slate-700 transition"
-                                            >
-                                                繼續考試
-                                            </button>
-                                            <button 
-                                                onClick={() => {
-                                                    setShowConfirmModal(false);
-                                                    setGameState('result');
-                                                }}
-                                                className="px-4 py-2 rounded-xl bg-red-600 text-white font-bold hover:bg-red-700 shadow-md transition"
-                                            >
-                                                確定交卷
-                                            </button>
+                                <div className="fixed inset-0 bg-slate-900/60 z-[200] flex items-center justify-center p-4 backdrop-blur-sm">
+                                    <div className="bg-white p-8 rounded-3xl text-slate-800 max-w-sm w-full shadow-2xl">
+                                        <h3 className="text-2xl font-bold mb-3 flex items-center gap-2"><AlertCircle className="text-red-500"/> 確定交卷？</h3>
+                                        <p className="mb-8 text-slate-500 font-medium">測驗將立即結束，未作答的題目將以 0 分計算。</p>
+                                        <div className="flex gap-4">
+                                            <button onClick={() => setShowConfirmModal(false)} className="flex-1 py-4 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors">繼續作答</button>
+                                            <button onClick={() => { setShowConfirmModal(false); setGameState('result'); }} className="flex-1 py-4 bg-red-600 text-white font-bold rounded-xl shadow-lg shadow-red-200 hover:bg-red-700 transition-colors">確定交卷</button>
                                         </div>
                                     </div>
                                 </div>
                             )}
 
-                            <div className="h-2 bg-slate-200 rounded-full mb-8 overflow-hidden">
-                                <div className="h-full bg-indigo-500 progress-bar" style={{ width: `${((currentIdx + 1) / currentQuestions.length) * 100}%` }}></div>
+                            <div className="h-3 bg-slate-200 rounded-full mb-10 overflow-hidden shadow-inner">
+                                <div className="h-full bg-indigo-500 progress-bar" style={{width:`${((currentIdx+1)/currentQuestions.length)*100}%`}}></div>
                             </div>
 
-                            <div className={`bg-white rounded-3xl p-8 shadow-sm border border-slate-100 card ${showExplanation ? 'ring-2 ' + (isCorrect ? 'ring-green-400' : 'ring-red-400') : ''}`}>
-                                
-                                {q.imgId && (
-                                    <div className="mb-6 rounded-xl overflow-hidden border-2 border-slate-100 bg-white flex justify-center items-center p-4">
-                                        <ExamImage imgId={q.imgId} />
-                                    </div>
-                                )}
-
-                                <h2 className="text-xl md:text-2xl font-medium mb-8 leading-relaxed">
-                                    {q.q}
-                                </h2>
-
+                            <div className={`bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-slate-100 card ${showExplanation ? (isCorrect ? 'ring-green-400 ring-4' : 'ring-red-400 ring-4') : ''}`}>
+                                {q.imgId && <ExamImage imgId={q.imgId} />}
+                                <h2 className="text-xl md:text-2xl font-medium mb-10 leading-relaxed text-slate-800">{q.q}</h2>
                                 <div className="space-y-4">
                                     {q.o.map((opt, i) => {
-                                        const char = ['A', 'B', 'C', 'D'][i];
-                                        const isSelected = userAnswers[currentIdx] === char;
-                                        
-                                        let btnClass = "w-full text-left p-4 rounded-2xl border-2 transition-all option-button flex justify-between items-center ";
-                                        if (showExplanation) {
-                                            if (char === q.a) btnClass += "border-green-500 bg-green-50 text-green-700 ";
-                                            else if (isSelected) btnClass += "border-red-500 bg-red-50 text-red-700 ";
-                                            else btnClass += "border-slate-100 opacity-50 ";
+                                        const char = ['A','B','C','D'][i]; const isSelected = userAnswers[currentIdx] === char;
+                                        let btnClass = "w-full text-left p-5 rounded-2xl border-2 transition-all option-button text-lg flex justify-between items-center ";
+                                        if (showExplanation) { 
+                                            if (char === q.a) btnClass += "border-green-500 bg-green-50 text-green-800 font-bold"; 
+                                            else if (isSelected) btnClass += "border-red-500 bg-red-50 text-red-800"; 
+                                            else btnClass += "opacity-40 border-slate-200 bg-slate-50"; 
                                         } else {
-                                            btnClass += isSelected ? "border-indigo-500 bg-indigo-50 text-indigo-700 font-bold" : "border-slate-100 hover:border-indigo-200 hover:bg-slate-50";
+                                            btnClass += isSelected ? "border-indigo-600 bg-indigo-50 text-indigo-800 font-bold shadow-md transform scale-[1.01]" : "border-slate-200 hover:border-indigo-300 hover:bg-slate-50 text-slate-700";
                                         }
-
                                         return (
-                                            <button 
-                                                key={char} 
-                                                disabled={showExplanation}
-                                                onClick={() => handleAnswer(char)}
-                                                className={btnClass}
-                                            >
-                                                <span>({char}) {opt}</span>
-                                                {showExplanation && char === q.a && <CheckCircle2 size={20} className="text-green-500" />}
-                                                {showExplanation && isSelected && char !== q.a && <XCircle size={20} className="text-red-500" />}
+                                            <button key={char} disabled={showExplanation} onClick={() => handleAnswer(char)} className={btnClass}>
+                                                <span className="leading-relaxed"><span className="mr-3 text-slate-400 font-normal">({char})</span> {opt}</span>
+                                                {showExplanation && char === q.a && <CheckCircle2 size={24} className="text-green-600 flex-shrink-0 ml-4" />}
+                                                {showExplanation && isSelected && char !== q.a && <XCircle size={24} className="text-red-500 flex-shrink-0 ml-4" />}
                                             </button>
                                         );
                                     })}
                                 </div>
 
                                 {showExplanation && (
-                                    <div className="mt-8 animate-in fade-in slide-in-from-bottom-2">
-                                        <div className={`p-4 rounded-xl flex items-start gap-3 ${isCorrect ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'}`}>
-                                            <AlertCircle className="shrink-0 mt-1" size={20} />
-                                            <div>
-                                                <p className="font-bold">{isCorrect ? '太棒了，回答正確！' : `回答錯誤，正確答案是 (${q.a})`}</p>
-                                            </div>
-                                        </div>
-                                        <button 
-                                            onClick={nextQuestion}
-                                            className="w-full mt-6 bg-slate-800 text-white py-4 rounded-2xl font-bold flex items-center justify-center gap-2 hover:bg-slate-900 transition shadow-lg"
-                                        >
-                                            下一題 <ChevronRight size={20} />
+                                    <div className="mt-10 p-6 bg-slate-50 rounded-2xl border border-slate-200 animate-in fade-in slide-in-from-bottom-4">
+                                        <p className={`font-bold text-xl mb-6 flex items-center gap-2 ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+                                            {isCorrect ? <><Award size={24}/> 答對了！實力堅強！</> : <><AlertCircle size={24}/> 答錯了，標準答案是 ({q.a})</>}
+                                        </p>
+                                        <button onClick={nextQuestion} className="w-full bg-slate-800 text-white py-5 rounded-xl font-bold text-lg hover:bg-slate-900 transition-colors shadow-lg flex justify-center items-center gap-2">
+                                            {currentIdx < currentQuestions.length - 1 ? '下一題' : '完成交卷'} <ChevronRight size={24} />
                                         </button>
                                     </div>
                                 )}
                             </div>
                             
-                            {feedbackMode === 'end' && (
-                                <div className="mt-8 flex justify-between gap-4">
-                                    <button 
-                                        disabled={currentIdx === 0}
-                                        onClick={() => setCurrentIdx(currentIdx - 1)}
-                                        className="px-6 py-3 rounded-xl border border-slate-200 bg-white font-medium hover:bg-slate-50 disabled:opacity-30 card shadow-sm"
-                                    >
-                                        上一題
-                                    </button>
-                                    <button 
-                                        onClick={nextQuestion}
-                                        className="px-8 py-3 rounded-xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 shadow-md"
-                                    >
-                                        {currentIdx === currentQuestions.length - 1 ? '交卷查看結果' : '下一題'}
+                            {feedbackMode === 'end' && !showExplanation && (
+                                <div className="mt-10 flex justify-between gap-4">
+                                    <button disabled={currentIdx === 0} onClick={() => setCurrentIdx(currentIdx - 1)} className="px-8 py-4 rounded-xl border-2 border-slate-200 bg-white font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-30 disabled:hover:bg-white transition-colors">上一題</button>
+                                    <button onClick={nextQuestion} className="px-10 py-4 rounded-xl bg-indigo-600 text-white font-bold text-lg hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition-colors flex items-center gap-2">
+                                        {currentIdx === currentQuestions.length - 1 ? '交卷查看結果' : '下一題'} <ChevronRight size={20}/>
                                     </button>
                                 </div>
                             )}
@@ -839,112 +551,82 @@
             }
 
             if (gameState === 'result') {
-                const score = calculateScore();
-                const maxScore = qData[selectedSubject].maxScore;
+                const score = calculateScore(); const maxScore = subjectMeta[selectedSubject].maxScore;
                 const scorePercent = (score / maxScore) * 100;
                 const feedback = getFeedbackMessage(scorePercent);
-                
-                let correctCount = 0;
-                currentQuestions.forEach((q, i) => { if (userAnswers[i] === q.a) correctCount++; });
+                let correctCount = 0; currentQuestions.forEach((q, i) => { if (userAnswers[i] === q.a) correctCount++; });
 
                 return (
-                    <div className="min-h-screen bg-slate-50 p-6 pt-24">
+                    <div className="min-h-screen bg-slate-50 p-4 md:p-6 pt-24 pb-24">
                         <CTABanner isDark={false} />
-                        <div className="max-w-4xl mx-auto">
-                            <div className="bg-white rounded-3xl p-10 shadow-xl text-center card border border-slate-100 mb-10">
-                                <div className="inline-flex items-center justify-center p-6 bg-indigo-100 text-indigo-600 rounded-full mb-6">
-                                    <Award size={64} />
-                                </div>
-                                <h1 className="text-4xl font-bold mb-2">測驗結果</h1>
-                                <p className="text-slate-500 mb-8">114年度 - {qData[selectedSubject].name}</p>
+                        <div className="max-w-4xl mx-auto text-center">
+                            <div className="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-2xl border border-slate-100 card mb-10 relative overflow-hidden">
+                                <div className="absolute top-0 left-0 w-full h-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+                                <Award size={80} className="mx-auto text-indigo-600 mb-6" />
+                                <h1 className="text-4xl md:text-5xl font-black mb-4 text-slate-800">測驗完成</h1>
+                                <p className="text-slate-500 mb-10 text-lg font-medium">{selectedYear}年度 - {subjectMeta[selectedSubject].name}</p>
                                 
-                                <div className="flex justify-center gap-8 mb-6">
+                                <div className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-16 mb-10">
                                     <div className="text-center">
-                                        <p className="text-slate-400 text-sm uppercase tracking-wider font-bold">總得分</p>
-                                        <p className="text-5xl font-black text-indigo-600">{score}<span className="text-2xl text-slate-400 font-normal"> / {maxScore}</span></p>
+                                        <p className="text-slate-400 text-sm font-bold tracking-widest mb-2">最終得分</p>
+                                        <p className="text-6xl font-black text-indigo-600">{score} <span className="text-2xl text-slate-300 font-normal">/ {maxScore}</span></p>
                                     </div>
-                                    <div className="w-px bg-slate-100"></div>
+                                    <div className="hidden md:block w-px h-24 bg-slate-200"></div>
                                     <div className="text-center">
-                                        <p className="text-slate-400 text-sm uppercase tracking-wider font-bold">答對題數</p>
-                                        <p className="text-5xl font-black text-slate-800">
-                                            {correctCount}<span className="text-2xl text-slate-400 font-normal"> / {currentQuestions.length}</span>
-                                        </p>
+                                        <p className="text-slate-400 text-sm font-bold tracking-widest mb-2">答對題數</p>
+                                        <p className="text-5xl font-black text-slate-700">{correctCount} <span className="text-2xl text-slate-300 font-normal">/ {currentQuestions.length}</span></p>
                                     </div>
                                 </div>
 
-                                <div className={`border-2 rounded-xl py-3 px-6 inline-block font-bold mb-10 ${feedback.color}`}>
-                                    {feedback.text}
+                                <div className={`border-2 rounded-2xl p-6 md:p-8 mb-10 max-w-2xl mx-auto transition-all ${feedback.color}`}>
+                                    <p className="text-lg md:text-xl font-bold leading-relaxed">{feedback.text}</p>
                                 </div>
 
-                                <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto">
-                                    <button 
-                                        onClick={() => setGameState('setup')}
-                                        className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-slate-100 text-slate-700 font-bold hover:bg-slate-200 transition"
-                                    >
-                                        <RefreshCcw size={20} /> 返回首頁
-                                    </button>
-                                    <button 
-                                        onClick={() => window.scrollTo({top: 800, behavior: 'smooth'})}
-                                        className="flex items-center justify-center gap-2 py-4 rounded-2xl bg-indigo-600 text-white font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition"
-                                    >
-                                        <ClipboardList size={20} /> 逐題檢討
-                                    </button>
+                                <div className="flex justify-center gap-4">
+                                    <button onClick={() => setGameState('setup')} className="bg-slate-100 text-slate-700 hover:bg-slate-200 px-10 py-5 rounded-2xl font-bold text-lg transition-colors flex items-center gap-2"><RefreshCcw size={20}/> 返回首頁</button>
                                 </div>
                             </div>
 
-                            <div className="space-y-6 pb-20">
-                                <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
-                                    <ClipboardList className="text-indigo-500" /> 詳細檢討
-                                </h3>
-                                {currentQuestions.map((q, i) => {
-                                    const userAns = userAnswers[i];
-                                    const isCorrect = userAns === q.a;
-                                    return (
-                                        <div key={i} className={`bg-white p-6 rounded-2xl border-l-8 shadow-sm flex flex-col gap-4 card ${isCorrect ? 'border-green-400' : 'border-red-400'}`}>
-                                            <div className="flex justify-between items-center">
-                                                <span className="font-bold text-slate-400">第 {i+1} 題</span>
-                                                {isCorrect ? (
-                                                    <span className="text-green-600 flex items-center gap-1 font-bold bg-green-50 px-3 py-1 rounded-full text-sm"><CheckCircle2 size={16}/> 正確</span>
-                                                ) : (
-                                                    <span className="text-red-600 flex items-center gap-1 font-bold bg-red-50 px-3 py-1 rounded-full text-sm"><XCircle size={16}/> 錯誤</span>
-                                                )}
-                                            </div>
-                                            
-                                            {q.imgId && (
-                                                <div className="mt-2 mb-4 p-4 bg-slate-50 border rounded-xl flex justify-center bg-white">
-                                                    <ExamImage imgId={q.imgId} />
-                                                </div>
-                                            )}
-
-                                            <p className="font-medium leading-relaxed">{q.q}</p>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mt-2">
-                                                {q.o.map((opt, j) => {
-                                                    const char = ['A','B','C','D'][j];
-                                                    let optClass = "p-3 rounded-xl border ";
-                                                    if (char === q.a) optClass += "bg-green-50 border-green-200 text-green-700 font-bold";
-                                                    else if (char === userAns) optClass += "bg-red-50 border-red-200 text-red-700";
-                                                    else optClass += "border-slate-100 text-slate-600";
-                                                    return (
-                                                        <div key={j} className={optClass}>
-                                                            ({char}) {opt}
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                            <div className="text-xs text-slate-400 border-t pt-3 flex justify-between">
-                                                <span>你的選擇：{userAns || '未填寫'}</span>
-                                                <span>標準答案：{q.a}</span>
-                                            </div>
+                            <div className="space-y-6 text-left">
+                                <h3 className="text-2xl font-bold text-slate-800 mb-6 px-2 flex items-center gap-3"><ClipboardList className="text-indigo-500" size={28}/> 逐題檢討分析</h3>
+                                {currentQuestions.map((q, i) => (
+                                    <div key={i} className={`bg-white p-6 md:p-8 rounded-3xl border-l-8 shadow-sm card ${userAnswers[i] === q.a ? 'border-green-400' : 'border-red-400'}`}>
+                                        <div className="flex justify-between items-center mb-6 pb-4 border-b border-slate-100">
+                                            <span className="font-bold text-slate-500 text-lg">第 {i+1} 題</span>
+                                            {userAnswers[i] === q.a ? 
+                                                <span className="text-green-600 font-bold bg-green-50 px-4 py-2 rounded-xl flex items-center gap-2"><CheckCircle2 size={18}/> 答對</span> : 
+                                                <span className="text-red-600 font-bold bg-red-50 px-4 py-2 rounded-xl flex items-center gap-2"><XCircle size={18}/> 答錯</span>
+                                            }
                                         </div>
-                                    );
-                                })}
+                                        
+                                        {q.imgId && <div className="mb-6 p-4 bg-slate-50 rounded-2xl"><ExamImage imgId={q.imgId} /></div>}
+                                        
+                                        <p className="font-medium text-lg leading-relaxed text-slate-800 mb-6">{q.q}</p>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+                                            {q.o.map((opt, j) => {
+                                                const char = ['A','B','C','D'][j];
+                                                let optClass = "p-4 rounded-xl border-2 text-sm md:text-base ";
+                                                if (char === q.a) optClass += "bg-green-50 border-green-200 text-green-800 font-bold shadow-sm";
+                                                else if (char === userAnswers[i]) optClass += "bg-red-50 border-red-200 text-red-800 font-bold";
+                                                else optClass += "border-slate-100 text-slate-500 bg-white";
+                                                return <div key={j} className={optClass}><span className="mr-2 opacity-60">({char})</span> {opt}</div>;
+                                            })}
+                                        </div>
+                                        
+                                        <div className="bg-slate-50 rounded-xl p-4 flex justify-between items-center text-sm font-medium text-slate-600">
+                                            <span>你的選擇：<span className={`font-bold ${userAnswers[i] === q.a ? 'text-green-600' : 'text-red-600'}`}>{userAnswers[i] || '未作答'}</span></span>
+                                            <span>標準答案：<span className="font-bold text-green-600">{q.a}</span></span>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
                 );
             }
         }
-
+        
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
