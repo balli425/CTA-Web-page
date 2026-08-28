@@ -254,6 +254,39 @@ footer {
     animation: fade-in 1s ease-out 0.4s backwards;
 }
 
+.visitor-counter {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.8125rem;
+}
+
+.visitor-counter-label {
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.visitor-counter-box {
+    display: flex;
+    gap: 0.75rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 9px;
+    padding: 0.4rem 0.9rem;
+    color: var(--text-main);
+}
+
+.visitor-counter-box .sep {
+    color: var(--text-muted);
+}
+
+.visitor-counter-box strong {
+    color: var(--secondary-color);
+}
+
 /* Animations */
 @keyframes fade-in-up {
     from { opacity: 0; transform: translateY(30px); }

@@ -45,9 +45,51 @@
             </a>
         </div>
         
-        <footer>
-            <p>&copy; 2026 CTA AI. All rights reserved.</p>
+        <footer class="site-footer">
+            <p>&copy; 築匠建築師事務所(CTArch)</p>
+            <div class="visitor-counter">
+                <span class="visitor-counter-label">📊 網站觀看人次：</span>
+                <div class="visitor-counter-box">
+                    <div>今日 <strong id="cnt-today">...</strong></div>
+                    <div class="sep">|</div>
+                    <div>本月 <strong id="cnt-month">...</strong></div>
+                    <div class="sep">|</div>
+                    <div>年度 <strong id="cnt-year">...</strong></div>
+                    <div class="sep">|</div>
+                    <div>總計 <strong id="cnt-total">...</strong></div>
+                </div>
+            </div>
         </footer>
     </main>
+
+    <script>
+    /* 人次計數器（kvdb.io 累積，不歸零；沿用 CTA-GEM 官網同一個 bucket，換 archquiz_ 前綴避免混計） */
+    (function () {
+        var d = new Date();
+        var yyyy = d.getFullYear();
+        var mm = yyyy + '-' + String(d.getMonth() + 1).padStart(2, '0');
+        var dd = mm + '-' + String(d.getDate()).padStart(2, '0');
+
+        var bucket = 'UpdkEy78HzmGeeQsNQHcU2';
+        var endpoint = 'https://kvdb.io/' + bucket + '/';
+
+        var keys = ['archquiz_total', 'archquiz_yr_' + yyyy, 'archquiz_mo_' + mm, 'archquiz_dy_' + dd];
+        var els = ['cnt-total', 'cnt-year', 'cnt-month', 'cnt-today'];
+
+        var isNewHit = !sessionStorage.getItem('archquiz_hit_recorded');
+        if (isNewHit) sessionStorage.setItem('archquiz_hit_recorded', '1');
+
+        keys.forEach(function (key, idx) {
+            var method = isNewHit ? 'PATCH' : 'GET';
+            var body = isNewHit ? '+1' : null;
+            fetch(endpoint + key, { method: method, body: body })
+                .then(function (r) { return r.ok ? r.text() : '0'; })
+                .then(function (v) {
+                    document.getElementById(els[idx]).innerText = parseInt(v) || 0;
+                })
+                .catch(function (e) { console.error('Counter Error:', e); });
+        });
+    })();
+    </script>
 </body>
 </html>
