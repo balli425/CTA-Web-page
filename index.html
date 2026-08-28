@@ -5,72 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="CTA 建築師考古題模擬測驗系統，提供標準測試與圖文並茂版本。">
     <title>CTA 建築師考古題模擬系統</title>
-    <link rel="stylesheet" href="style.css?v=20260828">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20260828d">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-animation"></div>
-    
-    <main class="container">
-        <header class="header">
-            <h1>建築師考古題模擬系統</h1>
-            <p>請選擇您要進行測驗的版本，開啟專屬您的刷動態解題體驗。</p>
-            <div class="scale-bar" aria-hidden="true">
-                <svg width="140" height="16" viewBox="0 0 140 16" fill="none">
-                    <line x1="1" y1="8" x2="139" y2="8" stroke="currentColor" stroke-width="1.2"></line>
-                    <line x1="1" y1="3" x2="1" y2="13" stroke="currentColor" stroke-width="1.2"></line>
-                    <line x1="35.5" y1="5" x2="35.5" y2="11" stroke="currentColor" stroke-width="1.2"></line>
-                    <line x1="70" y1="3" x2="70" y2="13" stroke="currentColor" stroke-width="1.2"></line>
-                    <line x1="104.5" y1="5" x2="104.5" y2="11" stroke="currentColor" stroke-width="1.2"></line>
-                    <line x1="139" y1="3" x2="139" y2="13" stroke="currentColor" stroke-width="1.2"></line>
-                </svg>
+    <div class="page">
+        <aside class="hero">
+            <div class="hero-top">
+                <span class="hero-eyebrow">CTA　建築師考試準備</span>
+                <h1 class="hero-title">建築師<br>考古題<br>模擬系統</h1>
+                <p class="hero-desc">請選擇您要進行測驗的版本，<br>開啟專屬您的刷題體驗。</p>
             </div>
-        </header>
-
-        <div class="card-grid">
-            <!-- Card 1 -->
-            <a href="建築師考古題模擬練習.html" class="glass-card primary-card">
-                <div class="card-content">
-                    <div class="icon-wrapper">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17 L17 3 L21 7 L7 21 Z"></path><path d="M13 7 L15 9"></path><path d="M10 10 L12 12"></path><path d="M7 13 L9 15"></path></svg>
+            <footer class="hero-footer">
+                <p>&copy; 築匠建築師事務所(CTArch)</p>
+                <div class="visitor-counter">
+                    <span class="visitor-counter-label">📊 觀看人次</span>
+                    <div class="visitor-counter-box">
+                        <div>今日 <strong id="cnt-today">...</strong></div>
+                        <div class="sep">/</div>
+                        <div>本月 <strong id="cnt-month">...</strong></div>
+                        <div class="sep">/</div>
+                        <div>年度 <strong id="cnt-year">...</strong></div>
+                        <div class="sep">/</div>
+                        <div>總計 <strong id="cnt-total">...</strong></div>
                     </div>
-                    <h2>標準模擬練習</h2>
-                    <p>標準題庫練習介面，適合快速刷題與自我測驗考科熟練度。具備高效率的單純作答體驗。</p>
-                    <span class="btn-text">開始測驗 <span class="arrow">→</span></span>
                 </div>
-                <div class="card-bg"></div>
+            </footer>
+        </aside>
+
+        <main class="index-panel">
+            <a href="建築師考古題模擬練習.html" class="index-row row-primary">
+                <span class="index-num">01</span>
+                <span class="index-body">
+                    <span class="index-title">標準模擬練習</span>
+                    <span class="index-desc">標準題庫練習介面，適合快速刷題與自我測驗考科熟練度。具備高效率的單純作答體驗。</span>
+                </span>
+                <span class="index-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </span>
             </a>
 
-            <!-- Card 2 -->
-            <a href="建築師考古題模擬練習-圖文並茂版本.html" class="glass-card secondary-card">
-                <div class="card-content">
-                    <div class="icon-wrapper">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="1"></rect><path d="M3 9 H21"></path><path d="M9 9 V21"></path><path d="M15 3 V9"></path></svg>
-                    </div>
-                    <h2>圖文並茂版本</h2>
-                    <p>加入圖表與圖像的豐富排版，更適合需要依賴視覺線索的題型，讓您圖解輕鬆讀。</p>
-                    <span class="btn-text">開始測驗 <span class="arrow">→</span></span>
-                </div>
-                <div class="card-bg"></div>
+            <a href="建築師考古題模擬練習-圖文並茂版本.html" class="index-row row-secondary">
+                <span class="index-num">02</span>
+                <span class="index-body">
+                    <span class="index-title">圖文並茂版本</span>
+                    <span class="index-desc">加入圖表與圖像的豐富排版，更適合需要依賴視覺線索的題型，讓您圖解輕鬆讀。</span>
+                </span>
+                <span class="index-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </span>
             </a>
-        </div>
-        
-        <footer class="site-footer">
-            <p>&copy; 築匠建築師事務所(CTArch)</p>
-            <div class="visitor-counter">
-                <span class="visitor-counter-label">📊 網站觀看人次：</span>
-                <div class="visitor-counter-box">
-                    <div>今日 <strong id="cnt-today">...</strong></div>
-                    <div class="sep">|</div>
-                    <div>本月 <strong id="cnt-month">...</strong></div>
-                    <div class="sep">|</div>
-                    <div>年度 <strong id="cnt-year">...</strong></div>
-                    <div class="sep">|</div>
-                    <div>總計 <strong id="cnt-total">...</strong></div>
-                </div>
-            </div>
-        </footer>
-    </main>
+        </main>
+    </div>
 
     <script>
     /* 人次計數器（kvdb.io 累積，不歸零；沿用 CTA-GEM 官網同一個 bucket，換 archquiz_ 前綴避免混計） */
