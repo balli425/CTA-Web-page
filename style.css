@@ -1,7 +1,7 @@
 :root {
-    --primary-color: #6366f1;
-    --primary-hover: #4f46e5;
-    --secondary-color: #ec4899;
+    --primary-color: #00A1E9;
+    --primary-hover: #0284c7;
+    --secondary-color: #E08A3C;
     --bg-dark: #0f172a;
     --text-main: #f8fafc;
     --text-muted: #94a3b8;
@@ -29,7 +29,7 @@ body {
 
 /* Selection & scrollbar polish */
 ::selection {
-    background: rgba(99, 102, 241, 0.35);
+    background: rgba(0, 161, 233, 0.35);
     color: #fff;
 }
 
@@ -64,9 +64,9 @@ html {
     height: 100vh;
     z-index: -1;
     overflow: hidden;
-    background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
-                radial-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+    background: radial-gradient(circle at top left, rgba(0, 161, 233, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at bottom right, rgba(224, 138, 60, 0.14) 0%, transparent 40%),
+                radial-gradient(rgba(56, 189, 248, 0.12) 1px, transparent 1px);
     background-size: auto, auto, 28px 28px;
     background-position: 0 0, 0 0, -14px -14px;
 }
@@ -123,24 +123,24 @@ html {
 }
 
 .badge {
-    background: rgba(99, 102, 241, 0.2);
-    color: #818cf8;
+    background: rgba(0, 161, 233, 0.2);
+    color: #38BDF8;
     padding: 0.5rem 1rem;
     border-radius: 2rem;
     font-size: 0.875rem;
     font-weight: 600;
-    border: 1px solid rgba(129, 140, 248, 0.3);
+    border: 1px solid rgba(56, 189, 248, 0.3);
     letter-spacing: 0.05em;
 }
 
 .header h1 {
     font-size: 3rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #fff 0%, #a5b4fc 60%, #f0abfc 100%);
+    background: linear-gradient(135deg, #fff 0%, #7DD3FC 55%, #FCD34D 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.02em;
-    filter: drop-shadow(0 0 32px rgba(129, 140, 248, 0.25));
+    filter: drop-shadow(0 0 32px rgba(56, 189, 248, 0.25));
 }
 
 .header p {
@@ -148,6 +148,12 @@ html {
     color: var(--text-muted);
     max-width: 500px;
     line-height: 1.6;
+}
+
+.scale-bar {
+    color: var(--text-muted);
+    opacity: 0.6;
+    margin-top: 0.25rem;
 }
 
 /* Card Grid */
@@ -184,11 +190,29 @@ html {
 }
 
 .primary-card:hover {
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 48px -12px rgba(99, 102, 241, 0.45);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 48px -12px rgba(0, 161, 233, 0.45);
 }
 
 .secondary-card:hover {
-    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 48px -12px rgba(236, 72, 153, 0.45);
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 48px -12px rgba(224, 138, 60, 0.45);
+}
+
+/* Blueprint corner registration marks */
+.glass-card::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M6 22V6H22' stroke='white' stroke-width='1.4' fill='none'/%3E%3Cpath d='M78 6H94V22' stroke='white' stroke-width='1.4' fill='none'/%3E%3Cpath d='M94 78V94H78' stroke='white' stroke-width='1.4' fill='none'/%3E%3Cpath d='M22 94H6V78' stroke='white' stroke-width='1.4' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    opacity: 0.18;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.glass-card:hover::before {
+    opacity: 0.4;
 }
 
 /* Card top accent bar */
@@ -256,17 +280,17 @@ html {
 }
 
 .primary-card .icon-wrapper {
-    color: #818cf8;
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.28), rgba(99, 102, 241, 0.04));
-    border-color: rgba(99, 102, 241, 0.3);
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+    color: #38BDF8;
+    background: linear-gradient(135deg, rgba(0, 161, 233, 0.28), rgba(0, 161, 233, 0.04));
+    border-color: rgba(0, 161, 233, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 161, 233, 0.2);
 }
 
 .secondary-card .icon-wrapper {
-    color: #f472b6;
-    background: linear-gradient(135deg, rgba(236, 72, 153, 0.28), rgba(236, 72, 153, 0.04));
-    border-color: rgba(236, 72, 153, 0.3);
-    box-shadow: 0 8px 32px rgba(236, 72, 153, 0.2);
+    color: #F5A85E;
+    background: linear-gradient(135deg, rgba(224, 138, 60, 0.28), rgba(224, 138, 60, 0.04));
+    border-color: rgba(224, 138, 60, 0.3);
+    box-shadow: 0 8px 32px rgba(224, 138, 60, 0.2);
 }
 
 .glass-card:hover .icon-wrapper {
@@ -274,11 +298,11 @@ html {
 }
 
 .primary-card:hover .icon-wrapper {
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 161, 233, 0.4);
 }
 
 .secondary-card:hover .icon-wrapper {
-    box-shadow: 0 8px 32px rgba(236, 72, 153, 0.4);
+    box-shadow: 0 8px 32px rgba(224, 138, 60, 0.4);
 }
 
 .icon-wrapper svg {
@@ -326,11 +350,11 @@ html {
     width: calc(100% - 1.6em);
 }
 
-.primary-card .btn-text { color: #818cf8; }
-.secondary-card .btn-text { color: #f472b6; }
+.primary-card .btn-text { color: #38BDF8; }
+.secondary-card .btn-text { color: #F5A85E; }
 
-.primary-card:hover .btn-text { color: #a5b4fc; }
-.secondary-card:hover .btn-text { color: #fbcfe8; }
+.primary-card:hover .btn-text { color: #7DD3FC; }
+.secondary-card:hover .btn-text { color: #FBD8A6; }
 
 .arrow {
     margin-left: 0.5rem;
