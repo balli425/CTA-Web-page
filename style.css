@@ -27,6 +27,34 @@ body {
     position: relative;
 }
 
+/* Selection & scrollbar polish */
+::selection {
+    background: rgba(99, 102, 241, 0.35);
+    color: #fff;
+}
+
+html {
+    scrollbar-color: rgba(148, 163, 184, 0.35) var(--bg-dark);
+    scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.5);
+}
+
 /* Dynamic Background Blob Animations */
 .background-animation {
     position: fixed;
@@ -37,7 +65,10 @@ body {
     z-index: -1;
     overflow: hidden;
     background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.15) 0%, transparent 40%);
+                radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
+                radial-gradient(rgba(148, 163, 184, 0.14) 1px, transparent 1px);
+    background-size: auto, auto, 28px 28px;
+    background-position: 0 0, 0 0, -14px -14px;
 }
 
 .background-animation::before,
@@ -105,10 +136,11 @@ body {
 .header h1 {
     font-size: 3rem;
     font-weight: 800;
-    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
+    background: linear-gradient(135deg, #fff 0%, #a5b4fc 60%, #f0abfc 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.02em;
+    filter: drop-shadow(0 0 32px rgba(129, 140, 248, 0.25));
 }
 
 .header p {
@@ -151,6 +183,39 @@ body {
     box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
 }
 
+.primary-card:hover {
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 48px -12px rgba(99, 102, 241, 0.45);
+}
+
+.secondary-card:hover {
+    box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), 0 0 48px -12px rgba(236, 72, 153, 0.45);
+}
+
+/* Card top accent bar */
+.glass-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    opacity: 0.6;
+    transition: opacity 0.4s ease;
+    z-index: 2;
+}
+
+.primary-card::after {
+    background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+}
+
+.secondary-card::after {
+    background: linear-gradient(90deg, transparent, var(--secondary-color), transparent);
+}
+
+.glass-card:hover::after {
+    opacity: 1;
+}
+
 /* Card Background Glow effect */
 .card-bg {
     position: absolute;
@@ -186,21 +251,34 @@ body {
     justify-content: center;
     margin-bottom: 1.5rem;
     background: rgba(255,255,255,0.05);
-    transition: transform 0.4s ease;
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
 .primary-card .icon-wrapper {
     color: #818cf8;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.28), rgba(99, 102, 241, 0.04));
+    border-color: rgba(99, 102, 241, 0.3);
     box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
 }
 
 .secondary-card .icon-wrapper {
     color: #f472b6;
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.28), rgba(236, 72, 153, 0.04));
+    border-color: rgba(236, 72, 153, 0.3);
     box-shadow: 0 8px 32px rgba(236, 72, 153, 0.2);
 }
 
 .glass-card:hover .icon-wrapper {
     transform: scale(1.1) rotate(5deg);
+}
+
+.primary-card:hover .icon-wrapper {
+    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.4);
+}
+
+.secondary-card:hover .icon-wrapper {
+    box-shadow: 0 8px 32px rgba(236, 72, 153, 0.4);
 }
 
 .icon-wrapper svg {
@@ -228,6 +306,24 @@ body {
     font-weight: 600;
     font-size: 0.95rem;
     transition: color 0.3s ease;
+    position: relative;
+    width: fit-content;
+}
+
+.btn-text::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0;
+    height: 1.5px;
+    background: currentColor;
+    opacity: 0.6;
+    transition: width 0.3s ease;
+}
+
+.glass-card:hover .btn-text::after {
+    width: calc(100% - 1.6em);
 }
 
 .primary-card .btn-text { color: #818cf8; }
@@ -252,6 +348,16 @@ footer {
     font-size: 0.875rem;
     margin-top: 2rem;
     animation: fade-in 1s ease-out 0.4s backwards;
+}
+
+footer::before {
+    content: '';
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    height: 1px;
+    margin: 0 auto 1.75rem;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
 }
 
 .visitor-counter {
